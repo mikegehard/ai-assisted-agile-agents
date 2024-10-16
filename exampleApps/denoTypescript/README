@@ -1,0 +1,9 @@
+# Deno based application with Playwright
+
+## Notes
+
+* After a morning trying to get this all working, I just gave up.
+* Cursor was able to get things started but I never got a working example running.
+* Claude Sonnet 3.5 told me about https://github.com/microsoft/playwright-deno but 
+    that repo doesn't seem to exist anymore?
+* Shifting gears to either Bun or Node.js.
