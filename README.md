@@ -78,9 +78,8 @@ or
 
 ## Random thoughts
 
-* Creating a "steel thread" from "Hello World" application to staging environment allows 
-        for faster iteration later because:
-            * You can focus on deployment without other complexities
-            * You can run the acceptance tests in staging, which should be as close to production as possible, to
-                ensure that nothing is broken
-                * This also allows for any change to stating to be deployed to production when required
+* Creating a "steel thread" from "Hello World" application to staging environment allows for faster iteration later because:
+    * You can focus on deployment without other complexities
+    * You can run the acceptance tests in staging, which should be as close to production as possible, to
+        ensure that nothing is broken
+        * This also allows for any change to staging to be deployed to production when required
