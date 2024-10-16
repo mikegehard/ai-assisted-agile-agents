@@ -1,6 +1,12 @@
 # Node.js TypeScript Playwright Example
 
-This project demonstrates a simple Hello World application using Express.js with TypeScript.
+This project demonstrates a simple Hello World application using Express.js with TypeScript and includes Playwright for acceptance testing.
+
+## Project Structure
+
+- `webApp/`: Contains the Express.js application
+- `acceptanceTests/`: Contains Playwright tests
+- `dist/`: Contains compiled JavaScript (created after building)
 
 ## Setup
 
@@ -18,4 +24,9 @@ The server will be running at `http://localhost:3000`.
 
 ## Testing
 
-(Add information about Playwright tests here once they are implemented)
+To run the Playwright tests:
+
+1. Make sure you have built the application (`npm run build`).
+2. Run `npm test` to execute the Playwright tests.
+
+The tests will start the server, run the tests, and then shut down the server automatically.

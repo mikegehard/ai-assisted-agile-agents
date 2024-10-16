@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "*.ts"
+    "webApp/**/*.ts",
+    "acceptanceTests/**/*.ts"
   ],
   "exclude": [
     "node_modules"
