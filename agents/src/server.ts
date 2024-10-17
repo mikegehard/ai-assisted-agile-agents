@@ -17,6 +17,11 @@ app.get('/ping', (_req, res) => {
 
 app.get('/weather-for', async (req, res) => {
   const { location } = req.query;
+
+  if (!location) {
+    return res.status(400).json({ error: 'Location is required' });
+  }
+
   const message = await new WeatherAgent(model, agentTools).getWeatherFor(location as string);
   res.send(message);
 });
