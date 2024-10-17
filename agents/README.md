@@ -36,19 +36,41 @@ Before you begin, ensure you have met the following requirements:
 
 ## Running the Project
 
-To run the project, run:
-    ```
-    npx tsx src/agent.ts
+### Running the Agent
 
-    ```
+To run the agent, use:
+```
+npx tsx src/agent.ts
+```
 
+### Starting the Server
+
+To start the server in production mode:
+```
+npm run start:server
+```
+
+### Running the Development Server
+
+To run the server in development mode with auto-reloading:
+```
+npm run dev
+```
+
+### Running Acceptance Tests
+
+**Note:** Ensure that the server is running before executing the acceptance tests.
+
+To run the acceptance tests:
+```
+npm run test:acceptance
+```
+
+You can start the server in a separate terminal window using either `npm run start:server` or `npm run dev` before running the acceptance tests.
 
 ## Running code with local models
 
-
 Note: The performance and capabilities of local models may differ from cloud-based models like OpenAI's GPT. Adjust your expectations accordingly.
-
-
 
 To run the code with a local model using Ollama, follow these steps:
 
