@@ -1,2 +1,3 @@
 Use descriptive naming instead of comments to describe what code does.
 Do no change or generate production code when asked to generate tests. Only change or generate production code when asked.
+Always tell me what "npm install" commands I need to run. Never add dependencies directly to package.json.
