@@ -7,9 +7,11 @@ test('should return weather information for a given city', async ({ request }) =
   });
 
   expect(response.ok()).toBeTruthy();
-  const responseText = await response.text();
-  expect(responseText).toContain(city);
-  expect(responseText).toMatch(/temperature|weather|forecast/i);
+  const responseJson = await response.json();
+  expect(responseJson).toHaveProperty('weather');
+  const weather = responseJson.weather;
+  expect(weather).toContain(city);
+  expect(weather).toMatch(/temperature|weather|forecast/i);
 });
 
 test('should handle missing location parameter', async ({ request }) => {

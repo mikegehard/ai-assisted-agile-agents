@@ -23,7 +23,7 @@ app.get('/weather-for', async (req, res) => {
   }
 
   const message = await new WeatherAgent(model, agentTools).getWeatherFor(location as string);
-  res.send(message);
+  return res.json({ weather: message });
 });
 
 app.listen(port, () => {
