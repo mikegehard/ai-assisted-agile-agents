@@ -83,3 +83,15 @@ or
     * You can run the acceptance tests in staging, which should be as close to production as possible, to
         ensure that nothing is broken
         * This also allows for any change to staging to be deployed to production when required
+
+## Learning resources
+
+### Agent Frameworks
+
+* https://learn.deeplearning.ai/courses/build-llm-apps-with-langchain-js/lesson/1/introduction
+* https://learn.deeplearning.ai/courses/ai-agentic-design-patterns-with-autogen/lesson/1/introduction
+* https://learn.deeplearning.ai/courses/ai-agents-in-langgraph/lesson/1/introduction
+
+### Testing
+
+* https://learn.deeplearning.ai/courses/automated-testing-llmops/lesson/1/introduction
