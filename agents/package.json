@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "nodemon --exec ts-node src/index.ts"
   },
   "keywords": [
     "langchain",
@@ -21,13 +21,13 @@
     "@langchain/core": "^0.3.12",
     "@langchain/langgraph": "^0.2.16",
     "@langchain/openai": "^0.3.8",
-    "@types/node": "^22.8.0",
-    "dotenv": "^16.4.6",
-    "langchain": "^0.3.3",
-    "typescript": "^5.6.4"
+    "@types/node": "^22.7.6",
+    "dotenv": "^16.4.5",
+    "langchain": "^0.3.2",
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "ts-node": "^10.9.3",
-    "ts-node-dev": "^2.0.1"
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
   }
 }
