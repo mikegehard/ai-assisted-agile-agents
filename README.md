@@ -76,6 +76,13 @@ The goal of this agent is to deploy the application.
 or 
 * Errors that are preventing deployment
 
+## LLM Prompt structure
+
+* System vs Human prompts
+* Loading context into system prompt
+* Loading context from previous messages into later prompts or use an LLM to create new prompt?
+* Ramp up on prompt engineering here to figure out the best approach
+
 ## Random thoughts
 
 * Creating a "steel thread" from "Hello World" application to staging environment allows for faster iteration later because:
