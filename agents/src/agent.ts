@@ -1,47 +1,58 @@
-import { config } from 'dotenv';
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { ChatOllama } from "@langchain/ollama";
 import { MemorySaver } from "@langchain/langgraph";
-import { HumanMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { config } from "dotenv";
+import { Tool } from '@langchain/core/tools';
 
-// Load environment variables from .env file
 config();
 
-// Define the tools for the agent to use
-const agentTools = [new TavilySearchResults({ maxResults: 3, apiKey: process.env.TAVILY_API_KEY })];
+export class WeatherAgent {
+  private model: BaseChatModel;
+  private tools: Tool[];
 
-// Function to initialize the agent with a specified model
-function initializeAgent(model: BaseChatModel) {
-  const agentCheckpointer = new MemorySaver();
-  return createReactAgent({
-    llm: model,
-    tools: agentTools,
-    checkpointSaver: agentCheckpointer,
+  constructor(model: BaseChatModel, tools: Tool[]) {
+    this.model = model;
+    this.tools = tools;
+  }
+
+  async getWeatherFor(location: string): Promise<string> {
+    const agent = this.initializeAgent(this.model);
+    const promptTemplate = `What is the current weather in {location}?`;
+    const formattedPrompt = promptTemplate.replace('{location}', location);
+    const agentFinalState = await agent.invoke(
+      { messages: [formattedPrompt] },
+      { configurable: { thread_id: "42" } },
+    );
+
+    return agentFinalState.messages[agentFinalState.messages.length - 1].content;
+  }
+
+  private initializeAgent(model: BaseChatModel) {
+    const agentCheckpointer = new MemorySaver();
+    return createReactAgent({
+      llm: model,
+      tools: this.tools,
+      checkpointSaver: agentCheckpointer,
+    });
+  }
+}
+
+async function runAgent(model: BaseChatModel) {
+  const message = await new WeatherAgent(model, agentTools).getWeatherFor("San Francisco");
+  console.log(message);
+}
+
+export function getModel(model: string) {
+  return new ChatOllama({
+    model: model,
   });
 }
 
-// Wrap the top-level await calls in an async function
-async function runAgent(model: BaseChatModel) {
-  const agent = initializeAgent(model);
+const agentTools = [new TavilySearchResults({ maxResults: 3, apiKey: process.env.TAVILY_API_KEY })];
 
-  const agentFinalState = await agent.invoke(
-    { messages: [new HumanMessage("what is the current weather in sf")] },
-    { configurable: { thread_id: "42" } },
-  );
-
-  console.log(
-    agentFinalState.messages[agentFinalState.messages.length - 1].content,
-  );
-}
-
-// Example usage with Llama 3.2 model hosted on Ollama
-const model = new ChatOllama({
-  model: "llama3.2",  // Replace with your model name.
-});
-
-runAgent(model);
+runAgent(getModel(process.env.OLLAMA_MODEL || "llama3.2"));
 
 // To use a different model, you can create a new instance and pass it to runAgent
 // For example:
