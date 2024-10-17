@@ -1,0 +1,2 @@
+Use descriptive naming instead of comments to describe what code does.
+Do no change or generate production code when asked to generate tests. Only change or generate production code when asked.
