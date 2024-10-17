@@ -41,3 +41,48 @@ To run the project, run:
     npx tsx src/agent.ts
 
     ```
+
+
+## Running code with local models
+
+
+Note: The performance and capabilities of local models may differ from cloud-based models like OpenAI's GPT. Adjust your expectations accordingly.
+
+
+
+To run the code with a local model using Ollama, follow these steps:
+
+1. Install Ollama:
+   Visit [Ollama's official website](https://ollama.ai/) and follow the installation instructions for your operating system.
+
+2. Pull the Code Llama model:
+   Open a terminal and run:
+   ```
+   ollama pull codellama
+   ```
+   This will download the Code Llama model, which is optimized for coding tasks.
+
+3. Testing Ollama
+
+   To ensure Ollama is running correctly in the background, follow these steps:
+
+   1. Open a terminal window.
+
+   2. Run the following command to check if Ollama is responsive:
+      ```
+      curl http://localhost:11434/api/tags
+      ```
+
+   3. If Ollama is running, you should see a JSON response listing available models. It should look something like this:
+      ```json
+      {"models":[{"name":"codellama","modified_at":"2024-02-20T12:34:56Z","size":3791650816}]}
+      ```
+
+   4. If you receive an error or no response, Ollama may not be running. Start it by running:
+      ```
+      ollama serve
+      ```
+
+   5. Once Ollama is running, you can proceed with running your agent using the local model.
+
+   Remember to keep Ollama running in the background while using your agent with the local model.
