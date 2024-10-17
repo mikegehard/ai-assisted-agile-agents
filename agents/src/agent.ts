@@ -4,24 +4,28 @@ import { ChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
 import { HumanMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 // Load environment variables from .env file
 config();
 
 // Define the tools for the agent to use
 const agentTools = [new TavilySearchResults({ maxResults: 3, apiKey: process.env.TAVILY_API_KEY })];
-const agentModel = new ChatOpenAI({ temperature: 0 });
 
-// Initialize memory to persist state between graph runs
-const agentCheckpointer = new MemorySaver();
-const agent = createReactAgent({
-  llm: agentModel,
-  tools: agentTools,
-  checkpointSaver: agentCheckpointer,
-});
+// Function to initialize the agent with a specified model
+function initializeAgent(model: BaseChatModel) {
+  const agentCheckpointer = new MemorySaver();
+  return createReactAgent({
+    llm: model,
+    tools: agentTools,
+    checkpointSaver: agentCheckpointer,
+  });
+}
 
 // Wrap the top-level await calls in an async function
-async function runAgent() {
+async function runAgent(model: BaseChatModel) {
+  const agent = initializeAgent(model);
+
   const agentFinalState = await agent.invoke(
     { messages: [new HumanMessage("what is the current weather in sf")] },
     { configurable: { thread_id: "42" } },
@@ -41,5 +45,11 @@ async function runAgent() {
   );
 }
 
-// Run the agent
-runAgent();
+// Example usage
+const openAIModel = new ChatOpenAI({ temperature: 0 });
+runAgent(openAIModel);
+
+// To use a different model, you can create a new instance and pass it to runAgent
+// For example:
+// const anthropicModel = new ChatAnthropic({ temperature: 0 });
+// runAgent(anthropicModel);
