@@ -39,22 +39,11 @@ export class WeatherAgent {
   }
 }
 
-async function runAgent(model: BaseChatModel) {
-  const message = await new WeatherAgent(model, agentTools).getWeatherFor("San Francisco");
-  console.log(message);
-}
-
-export function getModel(model: string) {
+export function getModel(model: string): BaseChatModel {
+  // To use a different model, you can create a new instance and pass it to runAgent
+  // For example:
+  // const anthropicModel = new ChatAnthropic({ temperature: 0 });
   return new ChatOllama({
     model: model,
   });
 }
-
-const agentTools = [new TavilySearchResults({ maxResults: 3, apiKey: process.env.TAVILY_API_KEY })];
-
-runAgent(getModel(process.env.OLLAMA_MODEL || "llama3.2"));
-
-// To use a different model, you can create a new instance and pass it to runAgent
-// For example:
-// const anthropicModel = new ChatAnthropic({ temperature: 0 });
-// runAgent(anthropicModel);
