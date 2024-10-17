@@ -3,10 +3,7 @@ import { ChatOllama } from "@langchain/ollama";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
-import { config } from "dotenv";
 import { Tool } from '@langchain/core/tools';
-
-config();
 
 export class WeatherAgent {
   private model: BaseChatModel;
