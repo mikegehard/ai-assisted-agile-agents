@@ -16,10 +16,19 @@ export class WeatherAgent {
 
   async getWeatherFor(location: string): Promise<string> {
     const agent = this.initializeAgent(this.model);
-    const promptTemplate = `What is the current weather in {location}?`;
-    const formattedPrompt = promptTemplate.replace('{location}', location);
+
+    const systemMessage = `
+You are a helpful assistant that can only answer questions about the weather.
+Provide accurate and concise information about current weather conditions
+in the specified location.
+Use the available tools to gather up-to-date information when needed.
+`;
+    const userMessageTemplate = `I am in ${location}. Can you help me?`;
+
+    const formattedUserPrompt = userMessageTemplate.replace('{location}', location);
+
     const agentFinalState = await agent.invoke(
-      { messages: [formattedPrompt] },
+      { messages: [systemMessage, formattedUserPrompt] },
       { configurable: { thread_id: "42" } },
     );
 
