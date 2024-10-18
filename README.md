@@ -98,6 +98,7 @@ or
 * https://learn.deeplearning.ai/courses/build-llm-apps-with-langchain-js/lesson/1/introduction
 * https://learn.deeplearning.ai/courses/ai-agentic-design-patterns-with-autogen/lesson/1/introduction
 * https://learn.deeplearning.ai/courses/ai-agents-in-langgraph/lesson/1/introduction
+* https://github.com/disler/poc-realtime-ai-assistant
 
 ### Testing
 
