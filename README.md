@@ -54,6 +54,8 @@ Here is my flow. Work in progress:
 
 ## Agents
 
+Based on my use of Aider, I've decided that the best way to interact with the AI agents is to use a multi-shot conversation within a CLI chat tool.
+
 ### Acceptance test writer
 
 The goal of this agent is to take a user story and write a Playwright test for it.
