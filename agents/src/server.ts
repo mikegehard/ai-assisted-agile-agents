@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { WeatherAgent, getModel } from './agent';
+import { WeatherAgent, getModel } from './weatherAgent';
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 
 config();

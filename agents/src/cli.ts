@@ -2,7 +2,7 @@
 import { Command } from 'commander';
 import dotenv from 'dotenv';
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
-import { WeatherAgent, getModel } from './agent.js';
+import { WeatherAgent, getModel } from './weatherAgent';
 
 // Load environment variables early
 dotenv.config();
