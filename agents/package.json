@@ -8,7 +8,8 @@
     "build": "bun build ./src/server.ts --outdir ./dist",
     "dev": "bun --watch src/server.ts",
     "test:acceptance": "playwright test",
-    "start:server": "bun src/server.ts"
+    "start:server": "bun src/server.ts",
+    "cli": "bun run src/cli.ts"
   },
   "keywords": [
     "langchain",
@@ -23,6 +24,7 @@
     "@langchain/langgraph": "^0.2.16",
     "@langchain/ollama": "^0.1.0",
     "@langchain/openai": "^0.3.8",
+    "commander": "^11.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "langchain": "^0.3.2",
@@ -34,6 +36,7 @@
     "bun-types": "latest"
   },
   "module": "src/server.ts",
+  "type": "module",
   "peerDependencies": {
     "typescript": "^5.0.0"
   },

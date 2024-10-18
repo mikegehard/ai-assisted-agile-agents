@@ -35,13 +35,6 @@ Before you begin, ensure you have met the following requirements:
 
 ## Running the Project
 
-### Running the Agent
-
-To run the agent, use:
-```
-bun run src/agent.ts
-```
-
 ### Starting the Server
 
 To start the server in production mode:
@@ -66,6 +59,22 @@ bun run test:acceptance
 ```
 
 You can start the server in a separate terminal window using either `bun run start:server` or `bun run dev` before running the acceptance tests.
+
+### Running the CLI
+
+To use the command-line interface for getting weather information:
+
+1. Ensure you're in the `agents` directory.
+2. Run the following command, replacing `<location>` with the desired location:
+   ```
+   bun run cli weather "<location>"
+   ```
+   For example:
+   ```
+   bun run cli weather "New York"
+   ```
+
+This will return the weather information for the specified location.
 
 ## Running code with local models
 
