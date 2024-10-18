@@ -6,3 +6,4 @@ dist/
 test-results/
 .env
 
+.aider*
