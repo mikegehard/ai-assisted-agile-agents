@@ -10,8 +10,7 @@ The application uses OpenAI's language model to generate creative company names.
 
 Before you begin, ensure you have met the following requirements:
 
-- Node.js (v14 or later)
-- npm (usually comes with Node.js)
+- Bun (latest version)
 - An OpenAI API key
 
 ## Setup
@@ -24,7 +23,7 @@ Before you begin, ensure you have met the following requirements:
 
 2. Install the dependencies:
    ```
-   npm install
+   bun install
    ```
 
 3. Create a `.env` by copying the `.env.example` file:
@@ -40,21 +39,21 @@ Before you begin, ensure you have met the following requirements:
 
 To run the agent, use:
 ```
-npx tsx src/agent.ts
+bun run src/agent.ts
 ```
 
 ### Starting the Server
 
 To start the server in production mode:
 ```
-npm run start:server
+bun run start:server
 ```
 
 ### Running the Development Server
 
 To run the server in development mode with auto-reloading:
 ```
-npm run dev
+bun run dev
 ```
 
 ### Running Acceptance Tests
@@ -63,10 +62,10 @@ npm run dev
 
 To run the acceptance tests:
 ```
-npm run test:acceptance
+bun run test:acceptance
 ```
 
-You can start the server in a separate terminal window using either `npm run start:server` or `npm run dev` before running the acceptance tests.
+You can start the server in a separate terminal window using either `bun run start:server` or `bun run dev` before running the acceptance tests.
 
 ## Running code with local models
 

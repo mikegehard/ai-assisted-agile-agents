@@ -2,14 +2,13 @@
   "name": "agents",
   "version": "1.0.0",
   "description": "A Langchain.js application using TypeScript",
-  "main": "dist/index.js",
-  "type": "module",
+  "main": "src/server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "dev": "tsx watch src/server.ts",
+    "test": "bun test",
+    "build": "bun build ./src/server.ts --outdir ./dist",
+    "dev": "bun --watch src/server.ts",
     "test:acceptance": "playwright test",
-    "start:server": "tsx src/server.ts"
+    "start:server": "bun src/server.ts"
   },
   "keywords": [
     "langchain",
@@ -32,9 +31,13 @@
   "devDependencies": {
     "@playwright/test": "^1.48.1",
     "@types/express": "^4.17.21",
-    "@types/node": "^22.7.6",
-    "nodemon": "^3.1.7",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.1"
+    "bun-types": "latest"
+  },
+  "module": "src/server.ts",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "bun": {
+    "entrypoints": ["src/server.ts"]
   }
 }
