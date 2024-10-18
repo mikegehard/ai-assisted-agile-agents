@@ -5,6 +5,18 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { Tool } from '@langchain/core/tools';
 
+
+export function createWeatherAgent(weatherApiKey: string, modelName: string): WeatherAgent {
+  const model = getModel(modelName);
+  const agentTools = [
+    new TavilySearchResults({
+      maxResults: 3,
+      apiKey: weatherApiKey
+    })
+  ];
+  return new WeatherAgent(model, agentTools);
+}
+
 export class WeatherAgent {
   private model: BaseChatModel;
   private tools: Tool[];
@@ -45,7 +57,7 @@ Use the available tools to gather up-to-date information when needed.
   }
 }
 
-export function getModel(model: string): BaseChatModel {
+function getModel(model: string): BaseChatModel {
   // To use a different model, you can create a new instance and pass it to runAgent
   // For example:
   // const anthropicModel = new ChatAnthropic({ temperature: 0 });

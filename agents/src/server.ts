@@ -1,16 +1,16 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { WeatherAgent, getModel } from './weatherAgent';
-import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
+import { createWeatherAgent } from './weatherAgent';
 
 config();
 
 const app = express();
 const port = 3000;
 
-const model = getModel(process.env.OLLAMA_MODEL || "llama3.2");
-const agentTools = [new TavilySearchResults({ maxResults: 3, apiKey: process.env.TAVILY_API_KEY })];
-const weatherAgent = new WeatherAgent(model, agentTools);
+const weatherAgent = createWeatherAgent(
+  process.env.TAVILY_API_KEY || "",
+  process.env.OLLAMA_MODEL || "llama3.2"
+);
 
 app.get('/ping', (_req, res) => {
   res.send('pong');

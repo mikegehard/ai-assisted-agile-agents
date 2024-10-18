@@ -1,8 +1,7 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import dotenv from 'dotenv';
-import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
-import { WeatherAgent, getModel } from './weatherAgent';
+import { createWeatherAgent } from './weatherAgent';
 import readline from 'readline';
 
 // Load environment variables early
@@ -10,14 +9,7 @@ dotenv.config();
 
 const program = new Command();
 
-const model = getModel(process.env.OLLAMA_MODEL || "llama3.2");
-const agentTools = [
-  new TavilySearchResults({
-    maxResults: 3,
-    apiKey: process.env.TAVILY_API_KEY
-  })
-];
-const weatherAgent = new WeatherAgent(model, agentTools);
+const weatherAgent = createWeatherAgent(process.env.TAVILY_API_KEY || "", process.env.OLLAMA_MODEL || "llama3.2");
 
 function startChatInterface() {
   const rl = readline.createInterface({
