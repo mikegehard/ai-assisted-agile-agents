@@ -2,9 +2,48 @@
 
 The goal of this project is to build a group of AI agents that can assist with Agile Software Development.
 
+## Background
+
+I've been working to figure out how to best integrate AI tools into my development workflow.
+I've been experimenting with the following tools:
+
+* Aider
+* Cursor or IntelliJ with Github Copilot
+* Warp terminal
+* Claude Projects
+
+The setup that I've come to like is:
+
+* Aider running in a Warp terminal
+* Cursor, or IntelliJ with Copilot, as an editor
+    * I've been using IntelliJ for Kotlin development because it's familiar
+    * I've been using Cursor for Typescript development so I can experience Cursor
+
+Here is my flow. Work in progress:
+
+* I use Aider for assistance with anything that requires me to make changes to more than one file.
+    * Implementing new features
+    * Moving files
+    * I haven't testes too many refactorings yet because the codebase I'm working on isn't large enough yet
+    * This is still an area of active research for me.
+* I use the editor, with AI assistant, for assistance within a single file.
+    * Being able to ask inline for code changes is very helpful.
+* I work in small steps, driven by tests when appropriate, and always start with a clean git branch.
+    * This allows me to easily throw away any work that the AI assistant gets wrong
+    because the cost of generating that code was pretty low.
+    * I'm also not afraid to experiment with multiple attempts at a single task,
+    and throw away the code if it doesn't work out, because I still learn something from the attempt.
+* I run any command that could fail in a terminal in Cursor.
+    * This allows me to easily use Cursor's built in AI assistant to help me debug the command if it fails.
+* Once the tests are green, or any manual checks are compelete, I make a commit with a descriptive
+    commit message that says why I made the commit and/or what I learned during that commit.
+    * This description is important because I have a hypothesis that I would write an agent
+    that could mine commit messages to answer questions about the evolution of the codebase.
+
 ## Repository Structure
 
 * exampleApps - directory of apps that are used to test the AI agents
+* agents - home of the CLI and web API that are used to interact with the AI agents
 
 ## Technologies
 
@@ -73,7 +112,7 @@ The goal of this agent is to deploy the application.
 
 #### Output
 * URL of running application
-or 
+or
 * Errors that are preventing deployment
 
 ## LLM Prompt structure
