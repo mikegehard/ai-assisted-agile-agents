@@ -56,7 +56,13 @@ Here is my flow. Work in progress:
 
 Based on my use of Aider, I've decided that the best way to interact with the AI agents is to use a multi-shot conversation within a CLI chat tool.
 
-### Acceptance test writer
+### Background/research
+
+* Use LangGraph with a set of tools that so that the LLMcan reason about the next step to take.
+
+### Evolving list of agents
+
+#### Acceptance test writer
 
 The goal of this agent is to take a user story and write a Playwright test for it.
 
@@ -68,35 +74,37 @@ The goal of this agent is to take a user story and write a Playwright test for i
 #### Output
 * New or revised Playwright test
 
-### Acceptance test runner
 
-The goal of this agent is to take an acceptance test and run it.
-
-#### Input
-* Acceptance test
-* Running web app URL
-
-#### Output
-* Test results
-    * Pass/Fail
-    * List of errors
-
-### Software developer
+#### Software developer
 
 The goal of this agent is to write software that:
 
 * compiles, null step for languages that don't use a compiler
 * passes all unit tests
-* possibly passes all acceptance tests
+* passes all acceptance tests
 
+#### Flow for outside in development
+    Pre-conditions:
+    * All tests are green
+    * Git branch is clean
 
-#### Input
-* All acceptance tests
-* Existing codebase, including unit tests
-* List of errors from acceptance test runner
-
-#### Output
-* Code to pass the test
+    1. Human: write acceptance test based on user story
+        * May use editor assistant to help write the test
+    2. Human: Ask assistant to get the codebase back to green
+    3. AI assistant: Determine what tools need to be run to get the codebase back to green based on the changed requirements.
+        * Tools:
+            * Compile code, null for languages that don't use a compiler
+            * Run acceptance tests
+            * Run unit tests
+        * Thoughts:
+            * The smaller the steps/context, the better the LLM's ability to reason about the next step so this is why you compile first.
+            * This is why we try to compile first and then run tests.
+            * Use a system prompt to educate the LLM about the Outside In TDD process.
+    4. Human: Create commit message, including information about why the change was made.
+        * A commit is made here so that it is easy to roll back to a green
+        state and ask for more refactoring from the AI assistant.
+    5. AI assistant: Refactor the code to improve the design of the codebase while keeping the codebase green
+    6. Human: Review changes and ammend the last commit to integrate refactoring changes.
 
 #### Edge cases
 * Does this agent bootstrap the codebase or is there another agent that does that?
@@ -105,7 +113,7 @@ The goal of this agent is to write software that:
         so this is a lower priority.
 
 
-### Application deployer
+#### Application deployer
 
 The goal of this agent is to deploy the application.
 
