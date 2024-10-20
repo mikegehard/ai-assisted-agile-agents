@@ -37,7 +37,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Starting the Server
 
-To start the server in production mode:
+To start the server:
 ```
 bun run start:server
 ```
@@ -63,21 +63,20 @@ To run the acceptance tests:
 
 The acceptance tests will automatically start the server before running, so there's no need to start the server separately.
 
+Note: Ensure you're in the `agents` directory before running any of these commands.
+
 ### Running the CLI
 
-To use the command-line interface for getting weather information:
+To use the command-line interface:
 
 1. Ensure you're in the `agents` directory.
-2. Run the following command, replacing `<location>` with the desired location:
+2. Run the CLI with the following syntax:
    ```
-   bun run cli weather "<location>"
-   ```
-   For example:
-   ```
-   bun run cli weather "New York"
+   bun run cli
    ```
 
-This will return the weather information for the specified location.
+For more information on available commands and options, use
+the `/help` command in the chat window.
 
 ## Running code with local models
 
