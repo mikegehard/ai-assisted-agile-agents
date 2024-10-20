@@ -56,12 +56,18 @@ To run the acceptance tests:
    ```
    cd agents
    ```
-2. Run the acceptance tests:
+2. Run the web acceptance tests:
    ```
    bun run test:acceptance:web
    ```
+3. Run the CLI acceptance tests:
+   ```
+   bun run test:acceptance:cli
+   ```
 
-The acceptance tests will automatically start the server before running, so there's no need to start the server separately.
+The web acceptance tests will automatically start the server before running, so there's no need to start the server separately.
+
+For CLI acceptance tests, ensure that the CLI application is properly set up and that all necessary dependencies are installed.
 
 Note: Ensure you're in the `agents` directory before running any of these commands.
 
