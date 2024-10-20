@@ -27,8 +27,14 @@ app.get('/weather-for', async (req, res) => {
   return res.json({ weather: message });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
+// Don't start the server here
+// Instead, export the app
 export default app;
+
+// If this file is run directly (not imported), then start the server
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}

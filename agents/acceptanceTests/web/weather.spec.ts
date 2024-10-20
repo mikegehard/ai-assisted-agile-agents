@@ -1,8 +1,25 @@
 import { test, expect } from '@playwright/test';
+import app from '../../../agents/src/server';
+import { AddressInfo } from 'net';
+
+let server: ReturnType<typeof app.listen>;
+let baseURL: string;
+
+test.beforeAll(async () => {
+  // Start the server on a dynamic port
+  server = app.listen(0); // Use port 0 to let the OS assign an available port
+  const address = server.address() as AddressInfo;
+  baseURL = `http://localhost:${address.port}`;
+});
+
+test.afterAll(async () => {
+  // Shut down the server
+  await new Promise<void>((resolve) => server.close(() => resolve()));
+});
 
 test('should return weather information for a given city', async ({ request }) => {
   const city = 'London';
-  const response = await request.get('/weather-for', {
+  const response = await request.get(`${baseURL}/weather-for`, {
     params: { location: city }
   });
 
@@ -15,7 +32,7 @@ test('should return weather information for a given city', async ({ request }) =
 });
 
 test('should handle missing location parameter', async ({ request }) => {
-  const response = await request.get('/weather-for');
+  const response = await request.get(`${baseURL}/weather-for`);
 
   expect(response.status()).toBe(400);
   const responseJson = await response.json();
