@@ -51,8 +51,6 @@ bun run dev
 
 ### Running Acceptance Tests
 
-**Note:** Ensure that the server is running before executing the acceptance tests.
-
 To run the acceptance tests:
 1. Make sure you are in the `agents` directory:
    ```
@@ -63,7 +61,7 @@ To run the acceptance tests:
    bun run test:acceptance:web
    ```
 
-You can start the server in a separate terminal window using either `bun run start:server` or `bun run dev` before running the acceptance tests. Remember to run these commands from the `agents` directory as well.
+The acceptance tests will automatically start the server before running, so there's no need to start the server separately.
 
 ### Running the CLI
 
