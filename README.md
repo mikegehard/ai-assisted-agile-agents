@@ -131,6 +131,8 @@ or
 * Loading context into system prompt
 * Loading context from previous messages into later prompts or use an LLM to create new prompt?
 * Ramp up on prompt engineering here to figure out the best approach
+* Using summaries created by an LLM can help with context size to keep
+costs down and responses faster.
 
 ## Random thoughts
 
