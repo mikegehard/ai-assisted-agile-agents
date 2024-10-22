@@ -1,6 +1,5 @@
 import readline from 'readline';
 import chalk from 'chalk';
-import { WeatherAgent } from './weatherAgent';
 
 export type InputHandler = (input: string) => Promise<void>;
 
@@ -40,19 +39,7 @@ class RunTestsCommand implements CommandHandler {
   }
 }
 
-class WeatherCommand implements CommandHandler {
-  constructor(private agent: WeatherAgent, private input: string) {}
-  async execute(): Promise<void> {
-    try {
-      const result = await this.agent.getWeatherFor(this.input);
-      console.log(chalk.blue('Weather Agent:'), result);
-    } catch (error) {
-      console.error(chalk.red('Error:'), error);
-    }
-  }
-}
-
-export function createInputHandler(rl: readline.Interface, agent: WeatherAgent): InputHandler {
+export function createInputHandler(rl: readline.Interface): InputHandler {
   return async (input: string): Promise<void> => {
     switch (input.toLowerCase()) {
       case Command.Exit:
@@ -65,7 +52,7 @@ export function createInputHandler(rl: readline.Interface, agent: WeatherAgent):
         await new RunTestsCommand().execute();
         return;
       default:
-        await new WeatherCommand(agent, input).execute();
+        console.log(chalk.red('Unknown command'));
     }
   };
 }
