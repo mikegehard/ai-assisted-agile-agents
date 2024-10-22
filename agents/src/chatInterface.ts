@@ -1,9 +1,8 @@
 import readline from 'readline';
 import chalk from 'chalk';
-import { WeatherAgent } from './weatherAgent';
-import { InputHandler, createInputHandler } from './inputHandler';
+import { InputHandler } from './inputHandler';
 
-interface ChatInterface {
+export interface ChatInterface {
     start: () => void;
 }
 
@@ -24,16 +23,15 @@ function promptUser(rl: readline.Interface, handleInput: InputHandler) {
     });
 }
 
-export function createChatInterface(agent: WeatherAgent): ChatInterface {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-    const handleInput = createInputHandler(rl, agent);
+export function createChatInterface(handleInput: InputHandler, rl: readline.Interface): ChatInterface {
     return {
         start: () => {
             displayWelcomeMessage();
             promptUser(rl, handleInput);
         }
     };
+}
+
+export function initializeChatInterface(inputHandler: InputHandler, readlineInterface: readline.Interface): ChatInterface {
+    return createChatInterface(inputHandler, readlineInterface);
 }
