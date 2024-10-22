@@ -6,7 +6,7 @@ interface ChatInterface {
     start: () => void;
 }
 
-function showHelp() {
+function displayAvailableCommands() {
     console.log(chalk.cyan(`
 Available commands:
 /exit - Exit the chat
@@ -14,7 +14,7 @@ Available commands:
 `));
 }
 
-function showGreeting() {
+function displayWelcomeMessage() {
     console.log(chalk.yellow(`
 Welcome to the Agile AI Assistant!
 Type '/exit' to quit.
@@ -22,27 +22,27 @@ Type '/help' to show the help menu.
 `));
 }
 
-function askQuestion(rl: readline.Interface, agent: WeatherAgent) {
-    rl.question(chalk.green('You: '), async (input) => {
-        if (input.toLowerCase() === '/exit') {
+function handleUserInput(input: string, rl: readline.Interface, agent: WeatherAgent): Promise<void> {
+    switch (input.toLowerCase()) {
+        case '/exit':
             rl.close();
-            return;
-        }
+            return Promise.resolve();
+        case '/help':
+            displayAvailableCommands();
+            return Promise.resolve();
+        default:
+            return agent.getWeatherFor(input)
+                .then(result => console.log(chalk.blue('Weather Agent:'), result))
+                .catch(error => console.error(chalk.red('Error:'), error));
+    }
+}
 
-        if (input.toLowerCase() === '/help') {
-            showHelp();
-            askQuestion(rl, agent);
-            return;
+function promptUser(rl: readline.Interface, agent: WeatherAgent) {
+    rl.question(chalk.green('You: '), async (input) => {
+        await handleUserInput(input, rl, agent);
+        if (input.toLowerCase() !== '/exit') {
+            promptUser(rl, agent);
         }
-
-        try {
-            const result = await agent.getWeatherFor(input);
-            console.log(chalk.blue('Weather Agent:'), result);
-        } catch (error) {
-            console.error(chalk.red('Error:'), error);
-        }
-
-        askQuestion(rl, agent);
     });
 }
 
@@ -53,8 +53,8 @@ export function createChatInterface(agent: WeatherAgent): ChatInterface {
     });
     return {
         start: () => {
-            showGreeting();
-            askQuestion(rl, agent);
+            displayWelcomeMessage();
+            promptUser(rl, agent);
         }
     };
 }
