@@ -6,6 +6,8 @@ interface ChatInterface {
     start: () => void;
 }
 
+type InputHandler = (input: string) => Promise<void>;
+
 function displayAvailableCommands() {
     console.log(chalk.cyan(`
 Available commands:
@@ -22,26 +24,31 @@ Type '/help' to show the help menu.
 `));
 }
 
-function handleUserInput(input: string, rl: readline.Interface, agent: WeatherAgent): Promise<void> {
-    switch (input.toLowerCase()) {
-        case '/exit':
-            rl.close();
-            return Promise.resolve();
-        case '/help':
-            displayAvailableCommands();
-            return Promise.resolve();
-        default:
-            return agent.getWeatherFor(input)
-                .then(result => console.log(chalk.blue('Weather Agent:'), result))
-                .catch(error => console.error(chalk.red('Error:'), error));
-    }
+function createInputHandler(rl: readline.Interface, agent: WeatherAgent): InputHandler {
+    return async (input: string): Promise<void> => {
+        switch (input.toLowerCase()) {
+            case '/exit':
+                rl.close();
+                return;
+            case '/help':
+                displayAvailableCommands();
+                return;
+            default:
+                try {
+                    const result = await agent.getWeatherFor(input);
+                    console.log(chalk.blue('Weather Agent:'), result);
+                } catch (error) {
+                    console.error(chalk.red('Error:'), error);
+                }
+        }
+    };
 }
 
-function promptUser(rl: readline.Interface, agent: WeatherAgent) {
+function promptUser(rl: readline.Interface, handleInput: InputHandler) {
     rl.question(chalk.green('You: '), async (input) => {
-        await handleUserInput(input, rl, agent);
+        await handleInput(input);
         if (input.toLowerCase() !== '/exit') {
-            promptUser(rl, agent);
+            promptUser(rl, handleInput);
         }
     });
 }
@@ -51,10 +58,11 @@ export function createChatInterface(agent: WeatherAgent): ChatInterface {
         input: process.stdin,
         output: process.stdout
     });
+    const handleInput = createInputHandler(rl, agent);
     return {
         start: () => {
             displayWelcomeMessage();
-            promptUser(rl, agent);
+            promptUser(rl, handleInput);
         }
     };
 }
