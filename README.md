@@ -75,7 +75,7 @@ The goal of this agent is to take a user story and write a Playwright test for i
 * New or revised Playwright test
 
 
-#### Software developer
+#### Code writer
 
 The goal of this agent is to write software that:
 
@@ -112,6 +112,12 @@ The goal of this agent is to write software that:
         * Most of the time for a developer will be spent in an established codebase
         so this is a lower priority.
 
+#### Code refactoring agent
+
+Can you come up with a set of prompts that can be used to guide the llm
+thought a set of refactorings?
+
+Could you use the list from the Martin Fowler book "Refactoring" as a starting point?
 
 #### Application deployer
 
