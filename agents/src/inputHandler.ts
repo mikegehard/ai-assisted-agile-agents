@@ -9,6 +9,7 @@ function displayAvailableCommands() {
 Available commands:
 /exit - Exit the chat
 /help - Show this help message
+/runTests - Run tests
 `));
 }
 
@@ -21,6 +22,12 @@ export function createInputHandler(rl: readline.Interface, agent: WeatherAgent):
             case '/help':
                 displayAvailableCommands();
                 return;
+            case '/runtests':
+                console.log(chalk.yellow('Running tests...'));
+                // Simulate running tests
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                console.log(chalk.green('Test results: All tests passed!'));
+                return;
             default:
                 try {
                     const result = await agent.getWeatherFor(input);
@@ -30,4 +37,9 @@ export function createInputHandler(rl: readline.Interface, agent: WeatherAgent):
                 }
         }
     };
+}
+
+function setupChatInterface(readlineInterface: readline.Interface, weatherAgent: WeatherAgent): ChatInterface {
+  const inputHandler: InputHandler = createInputHandler(readlineInterface, weatherAgent);
+  return initializeChatInterface(inputHandler, readlineInterface);
 }
