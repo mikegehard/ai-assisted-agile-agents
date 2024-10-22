@@ -69,8 +69,3 @@ export function createInputHandler(rl: readline.Interface, agent: WeatherAgent):
     }
   };
 }
-
-function setupChatInterface(readlineInterface: readline.Interface, weatherAgent: WeatherAgent): ChatInterface {
-  const inputHandler: InputHandler = createInputHandler(readlineInterface, weatherAgent);
-  return initializeChatInterface(inputHandler, readlineInterface);
-}
