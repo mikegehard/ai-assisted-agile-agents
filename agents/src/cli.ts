@@ -24,7 +24,7 @@ function setupWeatherAgent(): WeatherAgent {
 }
 
 function setupChatInterface(readlineInterface: readline.Interface, weatherAgent: WeatherAgent): ChatInterface {
-  const inputHandler: InputHandler = createInputHandler(readlineInterface, weatherAgent);
+  const inputHandler: InputHandler = createInputHandler(readlineInterface);
   return initializeChatInterface(inputHandler, readlineInterface);
 }
 
