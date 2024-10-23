@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import app from '../../../agents/src/server';
+import app from '../../src/api/server';
 import { AddressInfo } from 'net';
 
 let server: ReturnType<typeof app.listen>;
