@@ -1,29 +1,15 @@
 import { test, expect } from '@playwright/test';
-import { spawn } from 'child_process';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { setupCLITest } from './testUtils';
 
 test('CLI /runTests command', async () => {
-  const currentFilePath = fileURLToPath(import.meta.url);
-  const currentDirPath = path.dirname(currentFilePath);
-  const cliPath = path.resolve(currentDirPath, '../../src/cli/cli.ts');
-  const cli = spawn('bun', ['run', cliPath], { cwd: process.cwd() });
-
-  let output = '';
-
-  cli.stdout.on('data', (data) => {
-    output += data.toString();
-  });
-
-  let runTestsOutput = '';
+  const { sendCommand, waitForOutput } = setupCLITest();
 
   // Test /runTests command
-  cli.stdin.write('/runTests\n');
-  await new Promise(resolve => setTimeout(resolve, 10000)); // Increased timeout for tests to run
-  runTestsOutput = output;
+  sendCommand('/runTests');
+  const runTestsOutput = await waitForOutput(5000);
 
-  cli.stdin.write('/exit\n');
+  sendCommand('/exit');
 
   expect(runTestsOutput).toContain('Running tests...');
-  expect(runTestsOutput).toContain('Test results:');  
+  expect(runTestsOutput).toContain('Test results:');
 });
