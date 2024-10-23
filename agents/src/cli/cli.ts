@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import dotenv from 'dotenv';
-import { createWeatherAgent, WeatherAgent } from './weatherAgent';
+import { createWeatherAgent, WeatherAgent } from '../weatherAgent';
 import { ChatInterface, initializeChatInterface } from './chatInterface';
 import { createInputHandler, InputHandler } from './inputHandler';
 import readline from 'readline';

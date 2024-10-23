@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 test('CLI /help command', async () => {
   const currentFilePath = fileURLToPath(import.meta.url);
   const currentDirPath = path.dirname(currentFilePath);
-  const cliPath = path.resolve(currentDirPath, '../../src/cli.ts');
+  const cliPath = path.resolve(currentDirPath, '../../src/cli/cli.ts');
   const cli = spawn('bun', ['run', cliPath], { cwd: process.cwd() });
 
   let output = '';
