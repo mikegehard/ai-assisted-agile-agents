@@ -7,6 +7,7 @@
     "test": "bun test",
     "build": "bun build ./src/server.ts --outdir ./dist",
     "dev": "bun --watch src/server.ts",
+    "test:acceptance": "playwright test acceptanceTests",
     "test:acceptance:web": "playwright test acceptanceTests/web",
     "test:acceptance:cli": "playwright test acceptanceTests/cli",
     "start:server": "bun run src/server.ts",
