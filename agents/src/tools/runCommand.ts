@@ -1,11 +1,11 @@
-class CommandResults {
-  constructor(public exitCode: number, public output: string) {
-    this.exitCode = exitCode;
-    this.output = output;
-  }
+class FinishedCommandResult {
+    constructor(public exitCode: number, public output: string) {
+        this.exitCode = exitCode;
+        this.output = output;
+    }
 }
 
-export async function runCommand(workingDirectory: string, command: string, args: string[] = []): Promise<CommandResults> {
+export async function runCommand(workingDirectory: string, command: string, args: string[] = []): Promise<FinishedCommandResult> {
     try {
         const proc = Bun.spawn([command, ...args], {
             cwd: workingDirectory,
@@ -16,19 +16,12 @@ export async function runCommand(workingDirectory: string, command: string, args
         await proc.exited;
 
         const exitCode = proc.exitCode;
-
         const output = await streamToString(proc.stdout) || await streamToString(proc.stderr);
 
-        return {
-            exitCode: exitCode !== null ? exitCode : -1,
-            output: output,
-        };
+        return new FinishedCommandResult(exitCode !== null ? exitCode : -1, output);
     } catch (error: unknown) {
-        return {
-            exitCode: 127,
-            output: `Error: ${(error as Error).message}`,
-        };
-    }
+        return new FinishedCommandResult(127, `Error: ${(error as Error).message}`);
+    };
 }
 
 async function streamToString(readableStream: ReadableStream): Promise<string> {
