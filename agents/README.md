@@ -35,18 +35,21 @@ Before you begin, ensure you have met the following requirements:
 
 ## Running the Project
 
+NOTE: This project uses `bun start` instead of `bun run` to run commands
+so that typechecking is run automatically before running the command.
+
 ### Starting the Server
 
 To start the server:
 ```
-bun run start:server
+bun start start:server
 ```
 
 ### Running the Development Server
 
 To run the server in development mode with auto-reloading:
 ```
-bun run dev
+bun start dev
 ```
 
 ### Running Acceptance Tests
@@ -58,11 +61,15 @@ To run the acceptance tests:
    ```
 2. Run the web acceptance tests:
    ```
-   bun run test:acceptance:web
+   bun start test:acceptance:web
    ```
 3. Run the CLI acceptance tests:
    ```
-   bun run test:acceptance:cli
+   bun start test:acceptance:cli
+   ```
+4. Run all acceptance tests:
+   ```
+   bun start test:acceptance
    ```
 
 The web acceptance tests will automatically start the server before running, so there's no need to start the server separately.
@@ -71,6 +78,12 @@ For CLI acceptance tests, ensure that the CLI application is properly set up and
 
 Note: Ensure you're in the `agents` directory before running any of these commands.
 
+### Running the unit tests
+
+```
+bun start test
+```
+
 ### Running the CLI
 
 To use the command-line interface:
@@ -78,7 +91,7 @@ To use the command-line interface:
 1. Ensure you're in the `agents` directory.
 2. Run the CLI with the following syntax:
    ```
-   bun run cli
+   bun start cli
    ```
 
 For more information on available commands and options, use
