@@ -1,9 +1,24 @@
 import readline from 'readline';
 import chalk from 'chalk';
-import { InputHandler } from './inputHandler';
 
 export interface ChatInterface {
     start: () => void;
+}
+
+export type InputHandler = (input: string) => Promise<void>;
+
+export interface Output {
+    log: (message: string) => void;
+    error: (message: string) => void;
+}
+
+export class ConsoleOutput implements Output {
+    log(message: string): void {
+        console.log(message);
+    }
+    error(message: string): void {
+        console.log(chalk.red(message));
+    }
 }
 
 function displayWelcomeMessage() {

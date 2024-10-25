@@ -1,9 +1,8 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import dotenv from 'dotenv';
-import { createWeatherAgent, WeatherAgent } from '../weatherAgent';
-import { ChatInterface, initializeChatInterface } from './chatInterface';
-import { createInputHandler, InputHandler } from './inputHandler';
+import { ConsoleOutput, ChatInterface, initializeChatInterface, InputHandler } from './chatInterface';
+import { createCommandRegistry } from './commands';
 import readline from 'readline';
 
 // Load environment variables early
@@ -16,22 +15,19 @@ function createReadlineInterface(): readline.Interface {
   });
 }
 
-function setupWeatherAgent(): WeatherAgent {
-  return createWeatherAgent(
-    process.env.TAVILY_API_KEY || "",
-    process.env.OLLAMA_MODEL || "llama3.2"
-  );
-}
-
-function setupChatInterface(readlineInterface: readline.Interface, weatherAgent: WeatherAgent): ChatInterface {
-  const inputHandler: InputHandler = createInputHandler(readlineInterface);
+function setupChatInterface(readlineInterface: readline.Interface): ChatInterface {
+  const consoleOutput = new ConsoleOutput();
+  const registry = createCommandRegistry(readlineInterface, consoleOutput);
+  
+  const inputHandler: InputHandler =  async (input: string): Promise<void> => {
+    await registry.execute(input);
+  };
   return initializeChatInterface(inputHandler, readlineInterface);
 }
 
 function runChatInterface() {
   const readlineInterface = createReadlineInterface();
-  const weatherAgent = setupWeatherAgent();
-  const chatInterface = setupChatInterface(readlineInterface, weatherAgent);
+  const chatInterface = setupChatInterface(readlineInterface);
   chatInterface.start();
 }
 
