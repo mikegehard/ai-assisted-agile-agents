@@ -1,17 +1,20 @@
 import chalk from 'chalk';
 import readline from 'readline';
 import { Output } from './chatInterface';
+
 interface Command {
     name: string;
     description: string;
-    execute: (args?: string[]) => Promise<Result>;
+    execute: (args?: string[]) => Promise<Command.Result>;
 }
 
-type Result = {
-    success: true;
-} | {
-    success: false;
-    error: string;
+namespace Command {
+    export type Result = {
+        success: true;
+    } | {
+        success: false;
+        error: string;
+    }
 }
 
 export function createCommandRegistry(rl: readline.Interface, output: Output): CommandRegistry {
@@ -61,7 +64,7 @@ class ExitCommand implements Command {
 
     constructor(private rl: readline.Interface) { }
 
-    async execute(): Promise<Result> {
+    async execute(): Promise<Command.Result> {
         this.rl.close();
         return { success: true };
     }
@@ -76,7 +79,7 @@ class HelpCommand implements Command {
         private registry: CommandRegistry
     ) { }
 
-    async execute(): Promise<Result> {
+    async execute(): Promise<Command.Result> {
         const commandList = this.registry.getCommands()
             .map(cmd => `${cmd.name} - ${cmd.description}`)
             .join('\n');
@@ -92,7 +95,7 @@ class RunTestsCommand implements Command {
 
     constructor(private output: Output) { }
 
-    async execute(): Promise<Result> {
+    async execute(): Promise<Command.Result> {
         try {
             this.output.log(chalk.yellow('Running tests...'));
             await new Promise(resolve => setTimeout(resolve, 2000));
