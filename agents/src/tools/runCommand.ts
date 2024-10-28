@@ -1,8 +1,5 @@
 class FinishedCommandResult {
-    constructor(public exitCode: number, public output: string) {
-        this.exitCode = exitCode;
-        this.output = output;
-    }
+    constructor(public exitCode: number, public output: string) { }
 }
 
 export async function runCommand(workingDirectory: string, command: string, args: string[] = []): Promise<FinishedCommandResult> {
