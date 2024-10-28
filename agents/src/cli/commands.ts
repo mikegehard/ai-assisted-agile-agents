@@ -20,11 +20,12 @@ namespace Command {
 export function createCommandRegistry(rl: readline.Interface, output: Output): CommandRegistry {
     const registry = new CommandRegistry(output);
 
-    const helpCommand = new HelpCommand(output, registry);
-
     registry.register(new ExitCommand(rl));
-    registry.register(helpCommand);
     registry.register(new RunTestsCommand(output));
+    registry.register(new HelpCommand(
+        output,
+        registry.getCommands()
+    ));
 
     return registry;
 }
@@ -70,17 +71,19 @@ class ExitCommand implements Command {
     }
 }
 
+
+
 class HelpCommand implements Command {
     name = '/help';
     description = 'Show this help message';
 
     constructor(
         private output: Output,
-        private registry: CommandRegistry
+        private commands: Command[]
     ) { }
 
     async execute(): Promise<Command.Result> {
-        const commandList = this.registry.getCommands()
+        const commandList = this.commands
             .map(cmd => `${cmd.name} - ${cmd.description}`)
             .join('\n');
 
