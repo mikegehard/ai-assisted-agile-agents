@@ -148,7 +148,12 @@ costs down and responses faster.
         ensure that nothing is broken
         * This also allows for any change to staging to be deployed to production when required
 
-## Learning resources
+## Resources
+
+### AI and agile software development
+* https://thenewstack.io/whats-wrong-with-generative-ai-driven-development-right-now/
+* [Program Code Generation with Generative AIs](https://www.mdpi.com/1999-4893/17/2/62])
+* https://services.google.com/fh/files/misc/2024_final_dora_report.pdf
 
 ### Agent Frameworks
 
