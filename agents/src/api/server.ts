@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { createWeatherAgent } from '../weatherAgent';
+import { createWeatherAgent } from '../agents/weatherAgent';
 
 config();
 
