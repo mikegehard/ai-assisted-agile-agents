@@ -22,7 +22,7 @@ function setupChatInterface(readlineInterface: readline.Interface): ChatInterfac
   const inputHandler: InputHandler =  async (input: string): Promise<void> => {
     await registry.execute(input);
   };
-  return initializeChatInterface(inputHandler, readlineInterface);
+  return initializeChatInterface(inputHandler, readlineInterface, consoleOutput);
 }
 
 function runChatInterface() {

@@ -21,32 +21,32 @@ export class ConsoleOutput implements Output {
     }
 }
 
-function displayWelcomeMessage() {
-    console.log(chalk.yellow(`
+export function displayWelcomeMessage(output: Output) {
+    output.log(chalk.yellow(`
 Welcome to the Agile AI Assistant!
 Type '/exit' to quit.
 Type '/help' to show the help menu.
 `));
 }
 
-function promptUser(rl: readline.Interface, handleInput: InputHandler) {
+function promptUser(rl: readline.Interface, handleInput: InputHandler, output: Output) {
     rl.question(chalk.green('You: '), async (input) => {
         await handleInput(input);
         if (input.toLowerCase() !== '/exit') {
-            promptUser(rl, handleInput);
+            promptUser(rl, handleInput, output);
         }
     });
 }
 
-export function createChatInterface(handleInput: InputHandler, rl: readline.Interface): ChatInterface {
+export function createChatInterface(handleInput: InputHandler, rl: readline.Interface, output: Output): ChatInterface {
     return {
         start: () => {
-            displayWelcomeMessage();
-            promptUser(rl, handleInput);
+            displayWelcomeMessage(output);
+            promptUser(rl, handleInput, output);
         }
     };
 }
 
-export function initializeChatInterface(inputHandler: InputHandler, readlineInterface: readline.Interface): ChatInterface {
-    return createChatInterface(inputHandler, readlineInterface);
+export function initializeChatInterface(inputHandler: InputHandler, readlineInterface: readline.Interface, output: Output): ChatInterface {
+    return createChatInterface(inputHandler, readlineInterface, output);
 }
