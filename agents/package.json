@@ -4,7 +4,7 @@
   "description": "A Langchain.js application using TypeScript",
   "main": "src/server.ts",
   "scripts": {
-    "test": "bun test ./src/**/*.test.ts",
+    "test": "bun test src",
     "build": "bun build ./src/server.ts --outdir ./dist",
     "dev": "bun --watch src/server.ts",
     "test:acceptance": "playwright test acceptanceTests",
