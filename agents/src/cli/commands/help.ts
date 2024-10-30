@@ -1,4 +1,4 @@
-import { type Command, type Result } from './types';
+import { type Command } from './types';
 
 import { Output } from '../chatInterface';
 

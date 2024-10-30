@@ -18,8 +18,8 @@ export function createWeatherAgent(weatherApiKey: string, modelName: string): We
 }
 
 export class WeatherAgent {
-  private model: BaseChatModel;
-  private tools: Tool[];
+  private readonly model: BaseChatModel;
+  private readonly tools: Tool[];
 
   constructor(model: BaseChatModel, tools: Tool[]) {
     this.model = model;
@@ -27,9 +27,10 @@ export class WeatherAgent {
   }
 
   async getWeatherFor(location: string): Promise<string> {
-    const agent = this.initializeAgent(this.model);
+    try {
+      const agent = this.initializeAgent(this.model);
 
-    const systemMessage = `
+      const systemMessage = `
 You are a helpful assistant that can only answer questions about the weather.
 Provide accurate and concise information about current weather conditions
 in the specified location.
@@ -45,6 +46,10 @@ Use the available tools to gather up-to-date information when needed.
     );
 
     return agentFinalState.messages[agentFinalState.messages.length - 1].content;
+    } catch (error) {
+      console.error('Error getting weather:', error);
+      return `Sorry, I'm unable to get weather information right now. Please make sure Ollama is running and try again.`;
+    }
   }
 
   private initializeAgent(model: BaseChatModel) {

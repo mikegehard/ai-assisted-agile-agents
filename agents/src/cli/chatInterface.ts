@@ -2,14 +2,14 @@ import readline from 'readline';
 import chalk from 'chalk';
 
 export interface ChatInterface {
-    start: () => void;
+    start(): void;
 }
 
 export type InputHandler = (input: string) => Promise<void>;
 
 export interface Output {
-    log: (message: string) => void;
-    error: (message: string) => void;
+    log(message: string): void;
+    error(message: string): void;
 }
 
 export class ConsoleOutput implements Output {

@@ -2,9 +2,9 @@ import { Output } from '../chatInterface';
 import { Command } from './types';
 
 export class CommandRegistry {
-    private commands: Map<string, Command> = new Map();
+    private readonly commands: Map<string, Command> = new Map();
 
-    constructor(private output: Output) { }
+    constructor(private readonly output: Output) { }
 
     register(command: Command): void {
         this.commands.set(command.name.toLowerCase(), command);
