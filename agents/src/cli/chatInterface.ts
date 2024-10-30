@@ -21,7 +21,7 @@ export class ConsoleOutput implements Output {
     }
 }
 
-export function displayWelcomeMessage(output: Output) {
+function displayWelcomeMessage(output: Output) {
     output.log(chalk.yellow(`
 Welcome to the Agile AI Assistant!
 Type '/exit' to quit.
@@ -38,7 +38,10 @@ function promptUser(rl: readline.Interface, handleInput: InputHandler, output: O
     });
 }
 
-export function createChatInterface(handleInput: InputHandler, rl: readline.Interface, output: Output): ChatInterface {
+export function createChatInterface(handleInput: InputHandler,
+    rl: readline.Interface,
+    output: Output
+): ChatInterface {
     return {
         start: () => {
             displayWelcomeMessage(output);
@@ -47,6 +50,10 @@ export function createChatInterface(handleInput: InputHandler, rl: readline.Inte
     };
 }
 
-export function initializeChatInterface(inputHandler: InputHandler, readlineInterface: readline.Interface, output: Output): ChatInterface {
+export function initializeChatInterface(
+    inputHandler: InputHandler,
+    readlineInterface: readline.Interface,
+    output: Output
+): ChatInterface {
     return createChatInterface(inputHandler, readlineInterface, output);
 }

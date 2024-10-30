@@ -21,6 +21,10 @@ export function setupCLITest(): CLITestSetup {
     output += data.toString();
   });
 
+  cli.stderr.on('data', (data) => {
+    output += data.toString();
+  });
+
   const sendCommand = (command: string) => {
     cli.stdin.write(`${command}\n`);
   };
