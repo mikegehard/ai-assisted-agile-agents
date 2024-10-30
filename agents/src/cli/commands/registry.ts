@@ -1,5 +1,20 @@
 import { Output } from '../chatInterface';
 import { Command } from './types';
+import { ExitCommand } from './exit';
+import helpCommand from './help';
+import runTestsCommand from './runTests';
+
+
+export function createCommandRegistry(exit: () => void, output: Output): CommandRegistry {
+    const registry = new CommandRegistry(output);
+
+    registry.register(new ExitCommand(exit));
+    registry.register(runTestsCommand(output));
+    registry.register(helpCommand(output));
+
+    return registry;
+}
+
 
 export class CommandRegistry {
     private readonly commands: Map<string, Command> = new Map();

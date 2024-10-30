@@ -1,14 +1,13 @@
-import readline from 'readline';
 import { Command, Result } from './types';
 
 export class ExitCommand implements Command {
     name = '/exit';
     description = 'Exit the chat';
 
-    constructor(private rl: readline.Interface) { }
+    constructor(private exitChatInterface: () => void) { }
 
     async execute(): Promise<Result> {
-        this.rl.close();
+        this.exitChatInterface();
         return { success: true };
     }
 }

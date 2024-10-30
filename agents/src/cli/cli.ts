@@ -1,9 +1,8 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import dotenv from 'dotenv';
-import { ConsoleOutput, ChatInterface, initializeChatInterface, InputHandler } from './chatInterface';
-import { createCommandRegistry } from './commands';
 import readline from 'readline';
+import { createChatInterface } from './chatInterface';
 
 // Load environment variables early
 dotenv.config();
@@ -15,20 +14,9 @@ function createReadlineInterface(): readline.Interface {
   });
 }
 
-function setupChatInterface(readlineInterface: readline.Interface): ChatInterface {
-  const consoleOutput = new ConsoleOutput();
-  const registry = createCommandRegistry(readlineInterface, consoleOutput);
-  
-  const inputHandler: InputHandler =  async (input: string): Promise<void> => {
-    await registry.execute(input);
-  };
-  return initializeChatInterface(inputHandler, readlineInterface, consoleOutput);
-}
 
 function runChatInterface() {
-  const readlineInterface = createReadlineInterface();
-  const chatInterface = setupChatInterface(readlineInterface);
-  chatInterface.start();
+  createChatInterface(createReadlineInterface()).start();
 }
 
 const program = new Command();
