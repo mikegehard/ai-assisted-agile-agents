@@ -155,6 +155,7 @@ costs down and responses faster.
 * [Program Code Generation with Generative AIs](https://www.mdpi.com/1999-4893/17/2/62])
 * https://services.google.com/fh/files/misc/2024_final_dora_report.pdf
 * [ai written playwright tests](https://www.ranger.net/)
+* [ai to write test cases](https://testrigor.com/)
 
 ### Agent Frameworks
 
