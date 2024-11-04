@@ -3,13 +3,13 @@ import { Command } from './types';
 import { ExitCommand } from './exit';
 import helpCommand from './help';
 import runTestsCommand from './runTests';
-
+import {runAtCommandLine} from "../../tools/runAtCommandLine";
 
 export function createCommandRegistry(exit: () => void, output: Output): CommandRegistry {
     const registry = new CommandRegistry(output);
 
     registry.register(new ExitCommand(exit));
-    registry.register(runTestsCommand(output));
+    registry.register(runTestsCommand(output, runAtCommandLine));
     registry.register(helpCommand(output));
 
     return registry;
@@ -36,7 +36,7 @@ export class CommandRegistry {
 
         const result = await command.execute(args);
         if (!result.success) {
-            this.output.error(result.error);
+            this.output.error(result.message || "An error occurred");
         }
     }
 

@@ -11,7 +11,7 @@
     "test:acceptance:web": "playwright test acceptanceTests/web",
     "test:acceptance:cli": "playwright test acceptanceTests/cli",
     "start:server": "bun run src/server.ts",
-    "cli": "bun run src/cli.ts",
+    "cli": "bun run src/cli/cli.ts",
     "typecheck": "tsc --noEmit",
     "prestart": "bun run typecheck",
     "start": "bun run"

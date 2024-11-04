@@ -1,8 +1,16 @@
 class FinishedCommandResult {
-    constructor(public exitCode: number, public output: string) { }
+    constructor(public exitCode: number, public output: string) {
+    }
 }
 
-export async function runCommand(workingDirectory: string, command: string, args: string[] = []): Promise<FinishedCommandResult> {
+export type CommandLineRunner = (
+    workingDirectory: string,
+    command: string,
+    args: string[]) => Promise<FinishedCommandResult>;
+
+export const runAtCommandLine = async (workingDirectory: string,
+                                       command: string,
+                                       args: string[] = []): Promise<FinishedCommandResult> => {
     try {
         const proc = Bun.spawn([command, ...args], {
             cwd: workingDirectory,
@@ -18,7 +26,7 @@ export async function runCommand(workingDirectory: string, command: string, args
         return new FinishedCommandResult(exitCode !== null ? exitCode : -1, output);
     } catch (error: unknown) {
         return new FinishedCommandResult(127, `Error: ${(error as Error).message}`);
-    };
+    }
 }
 
 async function streamToString(readableStream: ReadableStream): Promise<string> {
@@ -28,10 +36,10 @@ async function streamToString(readableStream: ReadableStream): Promise<string> {
     let done = false;
 
     while (!done) {
-        const { value, done: doneReading } = await reader.read();
+        const {value, done: doneReading} = await reader.read();
         done = doneReading;
         if (value) {
-            result += decoder.decode(value, { stream: true });
+            result += decoder.decode(value, {stream: true});
         }
     }
 

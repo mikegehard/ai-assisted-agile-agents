@@ -5,5 +5,5 @@ export interface Command {
 }
 
 export type Result = 
-    | { readonly success: true }
-    | { readonly success: false; readonly error: string };
+    | { readonly success: true; readonly message?: string }
+    | { readonly success: false; readonly message?: string };
