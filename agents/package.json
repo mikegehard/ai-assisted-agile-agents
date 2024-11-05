@@ -1,11 +1,14 @@
 {
-  "name": "agents",
+  "name": "agile-development-agents",
   "version": "1.0.0",
   "description": "A Langchain.js application using TypeScript",
-  "main": "src/server.ts",
+  "bin": {
+    "agile-development-agents": "./dist/cli.js"
+  },
   "scripts": {
     "test": "bun test src",
-    "build": "bun build ./src/server.ts --outdir ./dist",
+    "build:server": "bun build ./src/server.ts --target node --outdir ./dist",
+    "build:cli": "bun build ./src/cli/cli.ts --target node --outdir ./dist",
     "dev": "bun --watch src/server.ts",
     "test:acceptance": "playwright test acceptanceTests",
     "test:acceptance:web": "playwright test acceptanceTests/web",

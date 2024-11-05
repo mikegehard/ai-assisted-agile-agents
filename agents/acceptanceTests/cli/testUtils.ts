@@ -9,11 +9,11 @@ export interface CLITestSetup {
   waitForOutput: (timeout: number) => Promise<string>;
 }
 
-export function setupCLITest(): CLITestSetup {
-  const currentFilePath = fileURLToPath(import.meta.url);
-  const currentDirPath = path.dirname(currentFilePath);
-  const cliPath = path.resolve(currentDirPath, '../../src/cli/cli.ts');
-  const cli = spawn('bun', ['run', cliPath], { cwd: process.cwd() });
+export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestSetup {
+  spawn('bun', ['build:cli'], { cwd: process.cwd() });
+  spawn('bun', ['link'], { cwd: process.cwd() });
+  spawn('bun', ['link', " agile-development-agents"], { cwd: process.cwd() });
+  const cli = spawn('agile-development-agents', [], { cwd: gitRepoDirectory });
 
   let output = '';
 
