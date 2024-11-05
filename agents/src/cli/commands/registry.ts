@@ -4,12 +4,14 @@ import exitCommand from './exit';
 import helpCommand from './help';
 import runTestsCommand from './runTests';
 import {runAtCommandLine} from "../../tools/runAtCommandLine";
+import makeGreenCommand from "./makeGreen";
 
 export function createCommandRegistry(exitAction: () => void, output: Output): CommandRegistry {
     const registry = new CommandRegistry(output);
 
     registry.register(exitCommand(exitAction));
     registry.register(runTestsCommand(output, runAtCommandLine));
+    registry.register(makeGreenCommand(output, runAtCommandLine));
     registry.register(helpCommand(output, registry.getCommands()));
 
     return registry;

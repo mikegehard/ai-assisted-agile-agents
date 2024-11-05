@@ -10,7 +10,7 @@ const helpCommand = (output: Output, availableCommands: Command[]): Command => (
             availableCommands.map(cmd => `${cmd.name}: ${cmd.description}`).join('\n');
 
         output.log(helpOutput);
-        return { success: true };
+        return { success: true, message: "" };
     },
 });
 
