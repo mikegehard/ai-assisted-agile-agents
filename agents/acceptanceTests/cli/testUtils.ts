@@ -1,39 +1,52 @@
-import { spawn, ChildProcess } from 'child_process';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
+import {spawn, ChildProcess} from 'child_process';
+import {execSync} from "node:child_process";
+import * as fs from "node:fs";
+import {join} from "path";
+import * as os from "node:os";
 
 export interface CLITestSetup {
-  cli: ChildProcess;
-  output: string;
-  sendCommand: (command: string) => void;
-  waitForOutput: (timeout: number) => Promise<string>;
+    cli: ChildProcess;
+    output: string;
+    sendCommand: (command: string) => void;
+    waitForOutput: (timeout: number) => Promise<string>;
 }
 
 export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestSetup {
-  spawn('bun', ['build:cli'], { cwd: process.cwd() });
-  spawn('bun', ['link'], { cwd: process.cwd() });
-  spawn('bun', ['link', " agile-development-agents"], { cwd: process.cwd() });
-  const cli = spawn('agile-development-agents', [], { cwd: gitRepoDirectory });
+    const randomFilename = () => Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('hex');
+    const distDirectory = fs.mkdtempSync(join(os.tmpdir(), 'cli-test'));
+    const builtFile = join(distDirectory, `/${randomFilename()}.js`);
 
-  let output = '';
+    execSync(`bun build ./src/cli/cli.ts --target node --outfile ${builtFile}`, {
+        cwd: process.cwd(),
+        encoding: 'utf8',
+        stdio: 'ignore',
+        env: process.env       // Pass through environment variables
+    });
 
-  cli.stdout.on('data', (data) => {
-    output += data.toString();
-  });
+    const cli = spawn("node", [builtFile], {
+            cwd: gitRepoDirectory
+        }
+    );
 
-  cli.stderr.on('data', (data) => {
-    output += data.toString();
-  });
+    let output = '';
 
-  const sendCommand = (command: string) => {
-    cli.stdin.write(`${command}\n`);
-  };
+    cli.stdout.on('data', (data) => {
+        output += data.toString();
+    });
 
-  const waitForOutput = async (timeout: number): Promise<string> => {
-    const startOutput = output;
-    await new Promise(resolve => setTimeout(resolve, timeout));
-    return output.slice(startOutput.length);
-  };
+    cli.stderr.on('data', (data) => {
+        output += data.toString();
+    });
 
-  return { cli, output, sendCommand, waitForOutput };
+    const sendCommand = (command: string) => {
+        cli.stdin.write(`${command}\n`);
+    };
+
+    const waitForOutput = async (timeout: number): Promise<string> => {
+        const startOutput = output;
+        await new Promise(resolve => setTimeout(resolve, timeout));
+        return output.slice(startOutput.length);
+    };
+
+    return {cli, output, sendCommand, waitForOutput};
 }

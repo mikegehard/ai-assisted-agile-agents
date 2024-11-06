@@ -2,7 +2,6 @@ import { Output } from '../chatInterface';
 import { Command } from './types';
 import exitCommand from './exit';
 import helpCommand from './help';
-import runTestsCommand from './runTests';
 import {runAtCommandLine} from "../../tools/runAtCommandLine";
 import makeGreenCommand from "./makeGreen";
 
@@ -10,7 +9,6 @@ export function createCommandRegistry(exitAction: () => void, output: Output): C
     const registry = new CommandRegistry(output);
 
     registry.register(exitCommand(exitAction));
-    registry.register(runTestsCommand(output, runAtCommandLine));
     registry.register(makeGreenCommand(output, runAtCommandLine));
     registry.register(helpCommand(output, registry.getCommands()));
 
@@ -29,15 +27,16 @@ export class CommandRegistry {
     }
 
     async execute(commandLine: string): Promise<void> {
-        const [commandName, ...args] = commandLine.toLowerCase().split(' ');
-        const command = this.commands.get(commandName);
+        const [commandName, ...args] = commandLine.split(' ');
+        const restOfCommand = args.join(' ');
+        const command = this.commands.get(commandName.toLowerCase());
 
         if (!command) {
-            this.output.error('Unknown command');
+            this.output.error(`Unknown command: ${commandName}`);
             return;
         }
 
-        const result = await command.execute(args);
+        const result = await command.execute(restOfCommand);
         if (!result.success) {
             this.output.error(result.message || "An error occurred");
         }
