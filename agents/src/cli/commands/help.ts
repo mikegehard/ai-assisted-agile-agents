@@ -2,17 +2,11 @@ import { type Command } from './types';
 
 import { Output } from '../chatInterface';
 
-const helpCommand = (output: Output): Command => ({
+const helpCommand = (output: Output, availableCommands: Command[]): Command => ({
     name: '/help',
     description: 'Show available commands',
     execute: async () => {
-        const availableCommands = [
-            { name: '/help', description: 'Show available commands' },
-            { name: '/runTests', description: 'Run all tests' },
-            { name: '/exit', description: 'Exit the CLI' },
-        ];
-
-        const helpOutput = 'Available commands:\n' + 
+        const helpOutput = 'Available commands:\n' +
             availableCommands.map(cmd => `${cmd.name}: ${cmd.description}`).join('\n');
 
         output.log(helpOutput);

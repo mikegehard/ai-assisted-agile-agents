@@ -1,6 +1,6 @@
-import { Output } from '../chatInterface';
-import { Command } from './types';
-import { ExitCommand } from './exit';
+import {Output} from '../chatInterface';
+import {Command} from './types';
+import {ExitCommand} from './exit';
 import helpCommand from './help';
 import runTestsCommand from './runTests';
 import {runAtCommandLine} from "../../tools/runAtCommandLine";
@@ -10,7 +10,7 @@ export function createCommandRegistry(exit: () => void, output: Output): Command
 
     registry.register(new ExitCommand(exit));
     registry.register(runTestsCommand(output, runAtCommandLine));
-    registry.register(helpCommand(output));
+    registry.register(helpCommand(output, registry.getCommands()));
 
     return registry;
 }
@@ -19,7 +19,8 @@ export function createCommandRegistry(exit: () => void, output: Output): Command
 export class CommandRegistry {
     private readonly commands: Map<string, Command> = new Map();
 
-    constructor(private readonly output: Output) { }
+    constructor(private readonly output: Output) {
+    }
 
     register(command: Command): void {
         this.commands.set(command.name.toLowerCase(), command);
