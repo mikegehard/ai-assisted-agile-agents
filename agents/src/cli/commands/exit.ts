@@ -1,13 +1,12 @@
 import { Command, Result } from './types';
 
-export class ExitCommand implements Command {
-    name = '/exit';
-    description = 'Exit the chat';
+const exitCommand = (exitAction: () => void): Command => ({
+    name: '/exit',
+    description: 'Exit the chat',
+    execute: async (): Promise<Result> => {
+        exitAction();
+        return { success: true, message: '' };
+    },
+});
 
-    constructor(private exitChatInterface: () => void) { }
-
-    async execute(): Promise<Result> {
-        this.exitChatInterface();
-        return { success: true };
-    }
-}
+export default exitCommand;

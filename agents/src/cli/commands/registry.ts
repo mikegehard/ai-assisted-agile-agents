@@ -1,14 +1,14 @@
-import {Output} from '../chatInterface';
-import {Command} from './types';
-import {ExitCommand} from './exit';
+import { Output } from '../chatInterface';
+import { Command } from './types';
+import exitCommand from './exit';
 import helpCommand from './help';
 import runTestsCommand from './runTests';
 import {runAtCommandLine} from "../../tools/runAtCommandLine";
 
-export function createCommandRegistry(exit: () => void, output: Output): CommandRegistry {
+export function createCommandRegistry(exitAction: () => void, output: Output): CommandRegistry {
     const registry = new CommandRegistry(output);
 
-    registry.register(new ExitCommand(exit));
+    registry.register(exitCommand(exitAction));
     registry.register(runTestsCommand(output, runAtCommandLine));
     registry.register(helpCommand(output, registry.getCommands()));
 
