@@ -1,7 +1,7 @@
 export interface Command {
     readonly name: string;
     readonly description: string;
-    execute: (args: readonly string[]) => Promise<Result>;
+    execute: (restOfCommand: string) => Promise<Result>;
 }
 
 export type Result = 

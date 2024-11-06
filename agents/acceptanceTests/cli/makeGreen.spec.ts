@@ -1,16 +1,19 @@
 import { test, expect } from '@playwright/test';
 import { setupCLITest } from './testUtils';
 
-test('Make all tests pass', async () => {
-    const { sendCommand, waitForOutput } = setupCLITest();
+test('Make typechecker happy', async () => {
+    const codebaseDirectory = `${process.cwd()}/acceptanceTests/applicationFixtures/typecheckError`
 
-    sendCommand('/makeGreen bun start test')
+    const { sendCommand, waitForOutput } = setupCLITest(codebaseDirectory);
+
+    sendCommand('/makeGreen tsc --noEmit');
 
     const makeGreenOutput = await waitForOutput(5000);
 
     sendCommand('/exit');
 
-    expect(makeGreenOutput).toContain('Running tests');
-    expect(makeGreenOutput).toContain('Tests failed');
-    expect(makeGreenOutput).toContain('Implementing code based on test results');
+    expect(makeGreenOutput).toContain('Running command: tsc --noEmit...');
+    expect(makeGreenOutput).toContain('Command failed');
+    expect(makeGreenOutput).toContain('Implementing code');
+    // TODO: add a test that shows the code was fixed
 });
