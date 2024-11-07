@@ -24,3 +24,14 @@ export async function readDirectoryContents(dir: Dir, parentDir: string = "", co
 
     return contents;
 }
+
+export function writeDirectoryContents(result: FileMap): string {
+    let output = "";
+    for (const [key, value] of result) {
+        output += `
+File: ${key}
+Contents: ${value}
+`
+    }
+    return output;
+}
