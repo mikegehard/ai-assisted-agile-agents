@@ -4,6 +4,7 @@ import {Command, Result} from "./types";
 import {CommandLineRunner} from "../../tools/runAtCommandLine";
 import * as fs from "node:fs";
 import {Dir} from "node:fs";
+import {readDirectoryContents} from "../../tools/readDirectoryContents";
 
 const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, cwd: string = "."): Command => {
     return ({
@@ -34,10 +35,11 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
 
             let tries = 0;
             const sourceDirectory: Dir = fs.opendirSync(cwd);
-            const agent = new CodingAgent(output, sourceDirectory);
+            const agent = new CodingAgent(output);
 
             while (cliCommandResult.exitCode != 0 && tries < 3) {
-                commandResult = await agent.implementCode(commandResult.message);
+                const currentCodebase = await readDirectoryContents(sourceDirectory);
+                commandResult = await agent.implementCode(commandResult.message, currentCodebase);
                 if (commandResult.success) {
                     cliCommandResult = await runAtCommandLine(cwd, command, args);
                 }

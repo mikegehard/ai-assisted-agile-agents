@@ -1,14 +1,11 @@
 import {Output} from "../cli/chatInterface";
 // TODO:Not sure I like having agents know about commands but let's see where this ends up.
 import {Result} from "../cli/commands/types";
-import {Dir} from "node:fs";
 import {BaseChatModel} from "@langchain/core/language_models/chat_models";
 import {MemorySaver} from "@langchain/langgraph";
 import {createReactAgent} from "@langchain/langgraph/prebuilt";
 import {ChatOllama} from "@langchain/ollama";
-import {readdir, stat} from 'fs/promises';
-import {join} from 'path';
-import {opendir} from "node:fs/promises";
+import {FileMap} from "../tools/readDirectoryContents";
 
 
 export class CodingAgent {
@@ -18,7 +15,6 @@ export class CodingAgent {
     // 1. Allow agent to use non-local model
     constructor(
         private readonly output: Output,
-        private readonly sourceDirectory: Dir,
         private readonly modelName: string = "codellama"
     ) {
         // TODO: Does this need to be different for each instance?
@@ -27,12 +23,10 @@ export class CodingAgent {
 
     // TODO: Should this be a map of filename to diff
     // so it's easy for a human to review?
-    async implementCode(commandOutput: string): Promise<Result> {
+    async implementCode(commandOutput: string, currentCodebase: FileMap): Promise<Result> {
         this.output.log(`Implementing code based on command output: ${commandOutput}...`);
 
         try {
-            const currentCodebase = await readDirectoryContents(this.sourceDirectory);
-
             const agent =
                 this.initializeAgent(
                     this.getModel(this.modelName)
@@ -72,7 +66,7 @@ export class CodingAgent {
         });
     }
 
-    private systemMessage(testOutput: string, currentCodebase: string): string {
+    private systemMessage(testOutput: string, currentCodebase: FileMap): string {
         return  `
 You are a experienced software developer in a codebase with a test suite.
 You are given the output of a test run and you must write code to make the tests pass.
@@ -82,30 +76,13 @@ ${currentCodebase}
 
 The current test output is:
 ${testOutput}
+
+Return format is JSON format with the filename as the key and the diff as the value.
+
+Example:
+{"src/foo.ts": "\nfunction foo(a: number, b: number): number {\\n    return a + b;\\n}"}
 `;
     }
 }
 
 
-// TODO: need to unit test this
-async function readDirectoryContents(dir: Dir): Promise<string> {
-    let contents = '';
-
-    const files = await readdir(dir.path);
-
-    for (const file of files) {
-        const fullPath = join(dir.path, file);
-        const stats = await stat(fullPath);
-
-        if (stats.isDirectory()) {
-            contents += `Directory: ${fullPath}\n`;
-            const subDir = await opendir(fullPath);
-            contents += await readDirectoryContents(subDir);
-            await subDir.close();
-        } else {
-            contents += `File: ${fullPath}\n`;
-        }
-    }
-
-    return contents;
-}
