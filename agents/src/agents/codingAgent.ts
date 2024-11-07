@@ -5,7 +5,7 @@ import {BaseChatModel} from "@langchain/core/language_models/chat_models";
 import {MemorySaver} from "@langchain/langgraph";
 import {createReactAgent} from "@langchain/langgraph/prebuilt";
 import {ChatOllama} from "@langchain/ollama";
-import {FileMap} from "../tools/readDirectoryContents";
+import {FileMap, writeDirectoryContents} from "../tools/readDirectoryContents";
 
 
 export class CodingAgent {
@@ -33,6 +33,8 @@ export class CodingAgent {
                 );
 
             const systemMessage = this.systemMessage(commandOutput, currentCodebase);
+
+            console.log(`System message: ${systemMessage}`);
 
             const agentFinalState = await agent.invoke(
                 {messages: [systemMessage]},
@@ -72,7 +74,7 @@ You are a experienced software developer in a codebase with a test suite.
 You are given the output of a test run and you must write code to make the tests pass.
 
 The current codebase is:
-${currentCodebase}
+${writeDirectoryContents(currentCodebase)}
 
 The current test output is:
 ${testOutput}
@@ -80,7 +82,7 @@ ${testOutput}
 Return format is JSON format with the filename as the key and the diff as the value.
 
 Example:
-{"src/foo.ts": "\nfunction foo(a: number, b: number): number {\\n    return a + b;\\n}"}
+{"src/foo.ts": "function foo(a: number, b: number): number {\\n    return a + b;\\n}"}
 `;
     }
 }

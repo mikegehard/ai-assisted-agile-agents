@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test";
 import {join} from "path";
-import {readDirectoryContents} from "./readDirectoryContents";
+import {readDirectoryContents, writeDirectoryContents} from "./readDirectoryContents";
 import {Dir} from "node:fs";
 import {opendir} from "node:fs/promises";
 
@@ -14,5 +14,23 @@ describe("readDirectoryContents", () => {
             ["foo.txt", "Contents of foo.txt"],
         ]);
         expect(result).toEqual(expected);
+    });
+});
+
+
+
+describe("printing out directory contents", () => {
+    test("Properly prints out directory contents", async () => {
+        const dir: Dir = await opendir(join(process.cwd(), "acceptanceTests/applicationFixtures/simpleDirectory"));
+        const output = writeDirectoryContents(await readDirectoryContents(dir));
+        const expected = `
+File: foo.txt
+Contents: Contents of foo.txt
+
+File: src/bar.ts
+Contents: const foo = "bar";
+
+`
+        expect(output).toBe(expected);
     });
 });
