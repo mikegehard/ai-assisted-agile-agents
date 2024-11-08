@@ -156,6 +156,7 @@ costs down and responses faster.
 * https://services.google.com/fh/files/misc/2024_final_dora_report.pdf
 * [ai written playwright tests](https://www.ranger.net/)
 * [ai to write test cases](https://testrigor.com/)
+g [ibm agents](https://research.ibm.com/blog/ibm-swe-agents)
 
 ### Agent Frameworks
 
