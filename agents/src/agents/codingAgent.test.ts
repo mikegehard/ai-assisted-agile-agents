@@ -5,6 +5,7 @@ import {Dir} from "node:fs";
 import {opendir} from "node:fs/promises";
 import {join} from "path";
 import {Output} from "../cli/chatInterface";
+import {getModel} from "./models";
 
 class ArrayOutput implements Output  {
     output: string[] = [];
@@ -27,7 +28,7 @@ class ArrayOutput implements Output  {
 describe("Coding Agent", () => {
     test("does something", async () => {
         const output = new ArrayOutput();
-        const agent = new CodingAgent(output);
+        const agent = new CodingAgent(output, getModel("codellama"));
 
         const testOutput = "src/add.ts(5,8): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.";
         const dir: Dir = await opendir(join(process.cwd(), "acceptanceTests/applicationFixtures/typecheckError"));

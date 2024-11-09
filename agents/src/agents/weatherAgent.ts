@@ -1,9 +1,9 @@
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
-import { ChatOllama } from "@langchain/ollama";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { Tool } from '@langchain/core/tools';
+import {getModel} from "./models";
 
 
 export function createWeatherAgent(weatherApiKey: string, modelName: string): WeatherAgent {
@@ -60,13 +60,4 @@ Use the available tools to gather up-to-date information when needed.
       checkpointSaver: agentCheckpointer,
     });
   }
-}
-
-function getModel(model: string): BaseChatModel {
-  // To use a different model, you can create a new instance and pass it to runAgent
-  // For example:
-  // const anthropicModel = new ChatAnthropic({ temperature: 0 });
-  return new ChatOllama({
-    model: model,
-  });
 }

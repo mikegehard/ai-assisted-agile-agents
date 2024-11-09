@@ -5,6 +5,7 @@ import {CommandLineRunner} from "../../tools/runAtCommandLine";
 import * as fs from "node:fs";
 import {Dir} from "node:fs";
 import {readDirectoryContents} from "../../tools/readDirectoryContents";
+import {getModel} from "../../agents/models";
 
 const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, cwd: string = "."): Command => {
     return ({
@@ -35,7 +36,7 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
 
             let tries = 0;
             const sourceDirectory: Dir = fs.opendirSync(cwd);
-            const agent = new CodingAgent(output);
+            const agent = new CodingAgent(output, getModel("codellama"));
 
             while (cliCommandResult.exitCode != 0 && tries < 3) {
                 const currentCodebase = await readDirectoryContents(sourceDirectory);

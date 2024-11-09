@@ -4,7 +4,6 @@ import {Result} from "../cli/commands/types";
 import {BaseChatModel} from "@langchain/core/language_models/chat_models";
 import {MemorySaver} from "@langchain/langgraph";
 import {createReactAgent} from "@langchain/langgraph/prebuilt";
-import {ChatOllama} from "@langchain/ollama";
 import {FileMap, writeDirectoryContents} from "../tools/readDirectoryContents";
 
 
@@ -15,7 +14,7 @@ export class CodingAgent {
     // 1. Allow agent to use non-local model
     constructor(
         private readonly output: Output,
-        private readonly modelName: string = "codellama"
+        private readonly model: BaseChatModel
     ) {
         // TODO: Does this need to be different for each instance?
         this.threadId = "42";
@@ -27,10 +26,7 @@ export class CodingAgent {
         this.output.log(`Implementing code based on command output: ${commandOutput}...`);
 
         try {
-            const agent =
-                this.initializeAgent(
-                    this.getModel(this.modelName)
-                );
+            const agent = this.initializeAgent(this.model);
 
             const systemMessage = this.systemMessage(commandOutput, currentCodebase);
 
@@ -59,17 +55,9 @@ export class CodingAgent {
         });
     }
 
-    private getModel(model: string): BaseChatModel {
-        // To use a different model, you can create a new instance and pass it to runAgent
-        // For example:
-        // const anthropicModel = new ChatAnthropic({ temperature: 0 });
-        return new ChatOllama({
-            model: model,
-        });
-    }
 
     private systemMessage(testOutput: string, currentCodebase: FileMap): string {
-        return  `
+        return `
 You are a experienced software developer in a codebase with a test suite.
 You are given the output of a test run and you must write code to make the tests pass.
 
