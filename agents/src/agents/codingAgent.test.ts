@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test";
 import {CodingAgent} from "./codingAgent";
-import {readDirectoryContents} from "../tools/readDirectoryContents";
+import {readDirectoryContents, writeDirectoryContents} from "../tools/readDirectoryContents";
 import {Dir} from "node:fs";
 import {opendir} from "node:fs/promises";
 import {join} from "path";
@@ -33,7 +33,7 @@ describe("Coding Agent", () => {
         const testOutput = "src/add.ts(5,8): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.";
         const dir: Dir = await opendir(join(process.cwd(), "acceptanceTests/applicationFixtures/typecheckError"));
         const currentCodebase = await readDirectoryContents(dir)
-        const result = await agent.implementCode(testOutput, currentCodebase);
+        const result = await agent.implementCode(testOutput, writeDirectoryContents(currentCodebase));
 
         // const expected = {success: true, message: "\n{\n\"src/add.ts\": \"+ function add(a: number, b: number): number {\\n+     return a + b;\\n+ }\"\n}"};
         expect(result.success).toBe(true);

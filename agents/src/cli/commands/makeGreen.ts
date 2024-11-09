@@ -4,7 +4,7 @@ import {Command, Result} from "./types";
 import {CommandLineRunner} from "../../tools/runAtCommandLine";
 import * as fs from "node:fs";
 import {Dir} from "node:fs";
-import {readDirectoryContents} from "../../tools/readDirectoryContents";
+import {readDirectoryContents, writeDirectoryContents} from "../../tools/readDirectoryContents";
 import {getModel} from "../../agents/models";
 
 const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, cwd: string = "."): Command => {
@@ -40,7 +40,7 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
 
             while (cliCommandResult.exitCode != 0 && tries < 3) {
                 const currentCodebase = await readDirectoryContents(sourceDirectory);
-                commandResult = await agent.implementCode(commandResult.message, currentCodebase);
+                commandResult = await agent.implementCode(commandResult.message, writeDirectoryContents(currentCodebase));
                 if (commandResult.success) {
                     cliCommandResult = await runAtCommandLine(cwd, command, args);
                 }

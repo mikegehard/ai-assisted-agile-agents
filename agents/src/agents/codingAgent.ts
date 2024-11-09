@@ -4,8 +4,8 @@ import {Result} from "../cli/commands/types";
 import {BaseChatModel} from "@langchain/core/language_models/chat_models";
 import {MemorySaver} from "@langchain/langgraph";
 import {createReactAgent} from "@langchain/langgraph/prebuilt";
-import {FileMap, writeDirectoryContents} from "../tools/readDirectoryContents";
 
+type CodebaseContext = string
 
 export class CodingAgent {
     private readonly threadId: string;
@@ -22,13 +22,13 @@ export class CodingAgent {
 
     // TODO: Should this be a map of filename to diff
     // so it's easy for a human to review?
-    async implementCode(commandOutput: string, currentCodebase: FileMap): Promise<Result> {
+    async implementCode(commandOutput: string, codebaseContext: CodebaseContext): Promise<Result> {
         this.output.log(`Implementing code based on command output: ${commandOutput}...`);
 
         try {
             const agent = this.initializeAgent(this.model);
 
-            const systemMessage = this.systemMessage(commandOutput, currentCodebase);
+            const systemMessage = this.systemMessage(commandOutput, codebaseContext);
 
             console.log(`System message: ${systemMessage}`);
 
@@ -56,13 +56,13 @@ export class CodingAgent {
     }
 
 
-    private systemMessage(testOutput: string, currentCodebase: FileMap): string {
+    private systemMessage(testOutput: string, codebaseContext: CodebaseContext): string {
         return `
 You are a experienced software developer in a codebase with a test suite.
 You are given the output of a test run and you must write code to make the tests pass.
 
 The current codebase is:
-${writeDirectoryContents(currentCodebase)}
+${codebaseContext}
 
 The current test output is:
 ${testOutput}
@@ -74,5 +74,3 @@ Example:
 `;
     }
 }
-
-
