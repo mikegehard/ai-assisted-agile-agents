@@ -15,5 +15,6 @@ test('Make typechecker happy', async () => {
     expect(makeGreenOutput).toContain('Running command: tsc --noEmit...');
     expect(makeGreenOutput).toContain('Command failed');
     expect(makeGreenOutput).toContain('Implementing code');
-    // TODO: add a test that shows the code was fixed
+    // TODO: add a test that shows the code was fixed? Need to figure out where to put the code
+    // as the tests run so that the fixture doesn't get overwritten?
 });

@@ -19,35 +19,33 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
             const [command, ...args] = commandLineCommand.split(" ");
             let cliCommandResult = await runAtCommandLine(cwd, command, args);
 
-            // TODO: This is a bit of a mess with the two different types of results
-            // need to clean this up so it is easier to understand.
-            let commandResult: Result;
             if (cliCommandResult.exitCode == 0) {
-                commandResult = {success: true, message: cliCommandResult.output};
-            } else {
-                commandResult = {success: false, message: cliCommandResult.output};
-            }
-
-            if (commandResult.success) {
-                return commandResult;
+                return {success: true, result: cliCommandResult.output};
             }
 
             output.log("Command failed.");
 
             let tries = 0;
             const sourceDirectory: Dir = fs.opendirSync(cwd);
-            const agent = new CodingAgent(output, getModel("codellama"));
+            const agent = new CodingAgent(output, getModel(
+                {name: "codellama"}
+            ));
 
+            let implementResult;
             while (cliCommandResult.exitCode != 0 && tries < 3) {
                 const currentCodebase = await readDirectoryContents(sourceDirectory);
-                commandResult = await agent.implementCode(commandResult.message, writeDirectoryContents(currentCodebase));
-                if (commandResult.success) {
+                implementResult = await agent.implementCode(cliCommandResult.output, writeDirectoryContents(currentCodebase));
+                if (implementResult.success) {
                     cliCommandResult = await runAtCommandLine(cwd, command, args);
                 }
                 tries++;
             }
 
-            return commandResult;
+            if (implementResult?.success && cliCommandResult.exitCode == 0) {
+                return {success: true, result: cliCommandResult.output};
+            } else {
+                return {success: false, error: new Error(cliCommandResult.output)};
+            }
         },
     });
 };

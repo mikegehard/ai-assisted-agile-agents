@@ -3,11 +3,11 @@ import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { Tool } from '@langchain/core/tools';
-import {getModel} from "./models";
+import {getModel, ModelConfiguration} from "./models";
 
 
-export function createWeatherAgent(weatherApiKey: string, modelName: string): WeatherAgent {
-  const model = getModel(modelName);
+export function createWeatherAgent(weatherApiKey: string, config: ModelConfiguration): WeatherAgent {
+  const model = getModel(config);
   const agentTools = [
     new TavilySearchResults({
       maxResults: 3,

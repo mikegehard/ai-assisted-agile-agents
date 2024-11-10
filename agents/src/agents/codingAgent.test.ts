@@ -1,11 +1,12 @@
 import {describe, expect, test} from "bun:test";
-import {CodingAgent} from "./codingAgent";
+import {CodeChange, CodingAgent} from "./codingAgent";
 import {readDirectoryContents, writeDirectoryContents} from "../tools/readDirectoryContents";
 import {Dir} from "node:fs";
 import {opendir} from "node:fs/promises";
 import {join} from "path";
 import {Output} from "../cli/chatInterface";
-import {getModel} from "./models";
+import {getModel, ModelConfiguration} from "./models";
+import dotenv from "dotenv";
 
 class ArrayOutput implements Output  {
     output: string[] = [];
@@ -19,23 +20,26 @@ class ArrayOutput implements Output  {
     }
 }
 
-/** TODO: I'm struggling to see how to test this because it
- *  uses AI to generate code.
- *  This test will be slow and expensive to write.
- *  Do some poking around first with LangGraph to see
- *  if you can figure out how to test this.
-  */
 describe("Coding Agent", () => {
-    test("does something", async () => {
+    test("generate the proper response with a local model", async () => {
+        dotenv.config();
         const output = new ArrayOutput();
-        const agent = new CodingAgent(output, getModel("codellama"));
+        const config: ModelConfiguration = {
+            name: "codellama",
+        }
+
+        const agent = new CodingAgent(output, getModel(config));
 
         const testOutput = "src/add.ts(5,8): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.";
         const dir: Dir = await opendir(join(process.cwd(), "acceptanceTests/applicationFixtures/typecheckError"));
         const currentCodebase = await readDirectoryContents(dir)
         const result = await agent.implementCode(testOutput, writeDirectoryContents(currentCodebase));
 
-        // const expected = {success: true, message: "\n{\n\"src/add.ts\": \"+ function add(a: number, b: number): number {\\n+     return a + b;\\n+ }\"\n}"};
+        const expected: CodeChange[] = [{"filename":"src/add.ts","contents":"function add(a: number, b: number): number {\n    return a + b;\n}\n\nadd(1, 2);"}]
+
         expect(result.success).toBe(true);
-    }, { timeout: 10000 })
+        if (result.success) {
+            expect(result.result as CodeChange[]).toEqual(expected);
+        }
+    }, { timeout: 15000 })
 });

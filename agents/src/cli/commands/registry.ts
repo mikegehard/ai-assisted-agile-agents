@@ -38,7 +38,7 @@ export class CommandRegistry {
 
         const result = await command.execute(restOfCommand);
         if (!result.success) {
-            this.output.error(result.message || "An error occurred");
+            this.output.error(result.error.message);
         }
     }
 

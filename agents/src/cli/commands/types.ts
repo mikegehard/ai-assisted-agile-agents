@@ -1,9 +1,9 @@
 export interface Command {
     readonly name: string;
     readonly description: string;
-    execute: (restOfCommand: string) => Promise<Result>;
+    execute: (restOfCommand: string) => Promise<Result<string>>;
 }
 
-export type Result = 
-    | { readonly success: true; readonly message: string }
-    | { readonly success: false; readonly message: string };
+export type Result<T = string, E = Error> =
+    | { readonly success: true; readonly result?: T }
+    | { readonly success: false; readonly error: E };

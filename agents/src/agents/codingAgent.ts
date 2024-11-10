@@ -1,17 +1,21 @@
 import {Output} from "../cli/chatInterface";
-// TODO:Not sure I like having agents know about commands but let's see where this ends up.
-import {Result} from "../cli/commands/types";
 import {BaseChatModel} from "@langchain/core/language_models/chat_models";
 import {MemorySaver} from "@langchain/langgraph";
 import {createReactAgent} from "@langchain/langgraph/prebuilt";
+import {Result} from "../cli/commands/types";
+import {z} from "zod";
 
 type CodebaseContext = string
+
+
+export interface CodeChange {
+    filename: string;
+    contents: string;
+}
 
 export class CodingAgent {
     private readonly threadId: string;
 
-    // TODO:
-    // 1. Allow agent to use non-local model
     constructor(
         private readonly output: Output,
         private readonly model: BaseChatModel
@@ -20,9 +24,7 @@ export class CodingAgent {
         this.threadId = "42";
     }
 
-    // TODO: Should this be a map of filename to diff
-    // so it's easy for a human to review?
-    async implementCode(commandOutput: string, codebaseContext: CodebaseContext): Promise<Result> {
+    async implementCode(commandOutput: string, codebaseContext: CodebaseContext): Promise<Result<CodeChange[]>> {
         this.output.log(`Implementing code based on command output: ${commandOutput}...`);
 
         try {
@@ -30,24 +32,49 @@ export class CodingAgent {
 
             const systemMessage = this.systemMessage(commandOutput, codebaseContext);
 
-            console.log(`System message: ${systemMessage}`);
-
             const agentFinalState = await agent.invoke(
                 {messages: [systemMessage]},
                 {configurable: {thread_id: this.threadId}},
             );
 
+            const llmResponse = agentFinalState.messages[agentFinalState.messages.length - 1].content;
 
-            const generatedCode = agentFinalState.messages[agentFinalState.messages.length - 1].content;
+            // Parse the JSON from the generated code
+            const jsonMatch = llmResponse.match(/\[[\s\S]*\]/);
+            if (jsonMatch) {
+                const jsonContent = JSON.parse(jsonMatch[0]);
+                return {
+                    success: true,
+                    result: jsonContent.map((item: any) => ({
+                        filename: item.file,
+                        contents: item.diff
+                    }))
+                };
+            } else {
+                return {
+                    success: false,
+                    error: new Error("No valid JSON found model response.")
+                };
 
-            return {success: true, message: generatedCode};
+            }
         } catch (error) {
-            return {success: false, message: `Sorry, I'm unable generate code right now. Error: ${error}`};
+            return {
+                success: false,
+                error: new Error(`Sorry, I'm unable generate code right now. Error: ${error}`)
+            };
         }
     }
 
     private initializeAgent(model: BaseChatModel) {
         const agentCheckpointer = new MemorySaver();
+
+        const schema = z.array(z.object({
+            file: z.string(),
+            diff: z.string(),
+        }));
+
+        model.withStructuredOutput(schema)
+
         return createReactAgent({
             llm: model,
             tools: [],
@@ -58,19 +85,41 @@ export class CodingAgent {
 
     private systemMessage(testOutput: string, codebaseContext: CodebaseContext): string {
         return `
-You are a experienced software developer in a codebase with a test suite.
-You are given the output of a test run and you must write code to make the tests pass.
+You are a TypeScript code fix generator.
+You must ONLY respond with a JSON array containing file contents.
 
-The current codebase is:
+Required Response Format:
+[{
+  "file": "string", // path to the file
+  "contents": "string"  // complete new file contents
+}]
+
+Rules:
+1. ONLY output valid JSON
+2. Do not include explanations or commentary
+3. Do not change function signatures
+4. Provide exactly one solution
+5. The diff must be the complete new file contents
+6. Preserve all whitespace and formatting
+
+Example Input:
+<codebaseContext>
 ${codebaseContext}
+</codebase>
 
-The current test output is:
+
+<currentOutput>
 ${testOutput}
+</currentOutput>
 
-Return format is JSON format with the filename as the key and the diff as the value.
+Example Output:
+[{
+  "file": "src/example.ts",
+  "diff": "function sum(a: number, b: number): number {\\n    return a + b;\\n}\\nsum(1, 2);"
+}]
 
-Example:
-{"src/foo.ts": "function foo(a: number, b: number): number {\\n    return a + b;\\n}"}
+Remember: Respond ONLY with the JSON array containing the fixes. Any other text will break the parser.
+
 `;
     }
 }
