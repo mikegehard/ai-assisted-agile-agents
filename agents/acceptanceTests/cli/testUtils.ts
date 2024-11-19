@@ -5,8 +5,6 @@ import {join} from "path";
 import * as os from "node:os";
 
 export interface CLITestSetup {
-    cli: ChildProcess;
-    output: string;
     sendCommand: (command: string) => void;
     waitForOutput: (timeout: number) => Promise<string>;
 }
@@ -48,5 +46,5 @@ export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestS
         return output.slice(startOutput.length);
     };
 
-    return {cli, output, sendCommand, waitForOutput};
+    return {sendCommand, waitForOutput};
 }
