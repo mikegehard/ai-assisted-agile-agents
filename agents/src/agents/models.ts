@@ -1,35 +1,37 @@
 import {BaseChatModel} from "@langchain/core/language_models/chat_models";
 import {ChatOllama} from "@langchain/ollama";
-import {ChatMistralAI} from "@langchain/mistralai";
+import {ChatAnthropic} from "@langchain/anthropic";
 
 export type ModelIdentifier =
-    | "codellama"
-    | "codestral-latest"
-    | "nemotron"
-    | "llama3.2";
+    | "codellama-local"
+    | "anthropic-sonnet"
+    | "anthropic-haiku"
+    | "llama3.2"
 
-export const defaultModelIdentifier: ModelIdentifier = "llama3.2"
+export const defaultModelIdentifier: ModelIdentifier = "codellama-local"
 
-export type ModelConfiguration = {
-    name: ModelIdentifier;
-    apiKey?: string;
-}
-
-export function getModel(modelConfig: ModelConfiguration): BaseChatModel {
-    switch (modelConfig.name) {
-        case "codellama":
+export function getModel(modelId: ModelIdentifier): BaseChatModel {
+    switch (modelId) {
+        case "codellama-local":
             return new ChatOllama({
-                model: modelConfig.name,
+                model: "codellama",
                 temperature: 0.1,
             })
-        case "codestral-latest":
-            console.log(`API key: ${modelConfig.apiKey}`)
-            return new ChatMistralAI({
-                model: modelConfig.name,
-                apiKey: modelConfig.apiKey,
-                temperature: 0.1,
-            })
+        case "anthropic-sonnet":
+            if (!process.env.ANTHROPIC_API_KEY) {
+                throw new Error("Missing API key for Anthropic model.");
+            }
+            return new ChatAnthropic({
+                apiKey: process.env.ANTHROPIC_API_KEY,
+            });
+        case "anthropic-haiku":
+            if (!process.env.ANTHROPIC_API_KEY) {
+                throw new Error("Missing API key for Anthropic model.");
+            }
+            return new ChatAnthropic({
+                apiKey: process.env.ANTHROPIC_API_KEY,
+            });
         default:
-            throw new Error("Invalid model identifier. Currently only 'codellama' and 'codestral-latest' are supported.");
+            throw new Error("Invalid model identifier.");
     }
 }

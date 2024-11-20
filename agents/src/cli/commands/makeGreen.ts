@@ -5,7 +5,7 @@ import {CommandLineRunner} from "../../tools/runAtCommandLine";
 import * as fs from "node:fs";
 import {Dir} from "node:fs";
 import {FileMap, readDirectoryContents} from "../../tools/readDirectoryContents";
-import {getModel} from "../../agents/models";
+import {defaultModelIdentifier, getModel, ModelIdentifier} from "../../agents/models";
 
 function writeChangesToDirectory(changes: FileMap, destinationDirectory: Dir) {
     for (const [filename, contents] of changes) {
@@ -16,7 +16,7 @@ function writeChangesToDirectory(changes: FileMap, destinationDirectory: Dir) {
 const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, cwd: string = "."): Command => {
     return ({
         name: '/makeGreen',
-        description: 'Make all tests pass',
+        description: "Make all tests pass. Usage: /makeGreen <command>",
         execute: async (commandLineCommand: string): Promise<Result> => {
             output.log(`Running command: ${commandLineCommand}...`);
 
@@ -33,9 +33,8 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
 
             let tries = 0;
             const sourceDirectory: Dir = fs.opendirSync(cwd);
-            const agent = new CodingAgent(output, getModel(
-                {name: "codellama"}
-            ));
+            const modelIdentifier: ModelIdentifier = process.env.MODEL_NAME as ModelIdentifier || defaultModelIdentifier;
+            const agent = new CodingAgent(output, getModel(modelIdentifier));
 
             let implementResult;
             while (cliCommandResult.exitCode != 0 && tries < 3) {
@@ -43,7 +42,6 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
                 const currentCodebase = await readDirectoryContents(sourceDirectory);
                 implementResult = await agent.implementCode(cliCommandResult.output, currentCodebase);
 
-                output.log(`Results: ${implementResult.success ? "success" : "failure"}`);
                 if (implementResult.success) {
                     writeChangesToDirectory(implementResult.result || new Map<string, string>, sourceDirectory);
                     cliCommandResult = await runAtCommandLine(cwd, command, args);

@@ -6,6 +6,7 @@ import * as os from "node:os";
 // @ts-ignore
 // I think this is here because the ESM version of fs-extra doesn't have a default export?
 import * as fsExtra from "fs-extra/esm";
+import {defaultModelIdentifier, ModelIdentifier} from "../../src/agents/models";
 
 export interface CLITestSetup {
     sendCommand: (command: string) => void;
@@ -14,7 +15,12 @@ export interface CLITestSetup {
     testWorkingDirectory: string;
 }
 
-export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestSetup {
+export function setupCLITest(
+    modelId: ModelIdentifier = defaultModelIdentifier,
+    gitRepoDirectory: string = process.cwd()
+): CLITestSetup {
+    process.env.MODEL_NAME = modelId;
+
     const randomFilename = () => Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('hex');
 
     const testWorkingDirectory = fs.mkdtempSync(join(os.tmpdir(), `cli-test-${randomFilename()}`));
@@ -30,7 +36,8 @@ export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestS
     });
 
     const cli = spawn("node", [builtFile], {
-            cwd: testWorkingDirectory
+            cwd: testWorkingDirectory,
+            env: process.env
         }
     );
 

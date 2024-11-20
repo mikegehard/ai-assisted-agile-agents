@@ -1,19 +1,15 @@
 import express from 'express';
 import { config } from 'dotenv';
 import { createWeatherAgent } from '../agents/weatherAgent';
-import {defaultModelIdentifier, ModelConfiguration, ModelIdentifier} from "../agents/models";
 
 config();
 
 const app = express();
 
-const modelConfig: ModelConfiguration = {
-  name: process.env.OLLAMA_MODEL as ModelIdentifier || defaultModelIdentifier,
-};
 
 const weatherAgent = createWeatherAgent(
   process.env.TAVILY_API_KEY || "",
-  modelConfig
+  "llama3.2"
 );
 
 app.get('/ping', (_req, res) => {

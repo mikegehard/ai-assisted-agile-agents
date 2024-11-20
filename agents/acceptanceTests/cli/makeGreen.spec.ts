@@ -5,7 +5,7 @@ import {runAtCommandLine} from "../../src/tools/runAtCommandLine";
 test('Make typechecker happy', async () => {
     const codebaseDirectory = `${process.cwd()}/acceptanceTests/applicationFixtures/typecheckError`
 
-    const { sendCommand, waitForOutput, testWorkingDirectory } = setupCLITest(codebaseDirectory);
+    const { sendCommand, waitForOutput, testWorkingDirectory } = setupCLITest("codellama-local", codebaseDirectory);
 
     sendCommand('/makeGreen tsc --noEmit');
 
