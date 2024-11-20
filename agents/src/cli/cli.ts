@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import readline from 'readline';
 import { createChatInterface } from './chatInterface';
 
-// Load environment variables early
 dotenv.config();
 
 function createReadlineInterface(): readline.Interface {

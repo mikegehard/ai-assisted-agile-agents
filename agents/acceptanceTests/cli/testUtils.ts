@@ -3,26 +3,34 @@ import {execSync} from "node:child_process";
 import * as fs from "node:fs";
 import {join} from "path";
 import * as os from "node:os";
+// @ts-ignore
+// I think this is here because the ESM version of fs-extra doesn't have a default export?
+import * as fsExtra from "fs-extra/esm";
 
 export interface CLITestSetup {
     sendCommand: (command: string) => void;
     waitForOutput: (timeout: number) => Promise<string>;
+    // TODO: Should this be a Dir?
+    testWorkingDirectory: string;
 }
 
 export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestSetup {
     const randomFilename = () => Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('hex');
-    const distDirectory = fs.mkdtempSync(join(os.tmpdir(), 'cli-test'));
-    const builtFile = join(distDirectory, `/${randomFilename()}.js`);
+
+    const testWorkingDirectory = fs.mkdtempSync(join(os.tmpdir(), `cli-test-${randomFilename()}`));
+    fsExtra.copySync(gitRepoDirectory, testWorkingDirectory);
+
+    const builtFile = join(os.tmpdir(), `ai-assisted-agile-cli-${randomFilename()}.js`);
 
     execSync(`bun build ./src/cli/cli.ts --target node --outfile ${builtFile}`, {
         cwd: process.cwd(),
         encoding: 'utf8',
         stdio: 'ignore',
-        env: process.env       // Pass through environment variables
+        env: process.env
     });
 
     const cli = spawn("node", [builtFile], {
-            cwd: gitRepoDirectory
+            cwd: testWorkingDirectory
         }
     );
 
@@ -46,5 +54,5 @@ export function setupCLITest(gitRepoDirectory: string = process.cwd()): CLITestS
         return output.slice(startOutput.length);
     };
 
-    return {sendCommand, waitForOutput};
+    return {sendCommand, waitForOutput, testWorkingDirectory};
 }

@@ -4,8 +4,14 @@ import {Command, Result} from "./types";
 import {CommandLineRunner} from "../../tools/runAtCommandLine";
 import * as fs from "node:fs";
 import {Dir} from "node:fs";
-import {readDirectoryContents, writeDirectoryContents} from "../../tools/readDirectoryContents";
+import {FileMap, readDirectoryContents} from "../../tools/readDirectoryContents";
 import {getModel} from "../../agents/models";
+
+function writeChangesToDirectory(changes: FileMap, destinationDirectory: Dir) {
+    for (const [filename, contents] of changes) {
+        fs.writeFileSync(`${destinationDirectory.path}/${filename}`, contents);
+    }
+}
 
 const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, cwd: string = "."): Command => {
     return ({
@@ -33,9 +39,13 @@ const makeGreenCommand = (output: Output, runAtCommandLine: CommandLineRunner, c
 
             let implementResult;
             while (cliCommandResult.exitCode != 0 && tries < 3) {
+
                 const currentCodebase = await readDirectoryContents(sourceDirectory);
-                implementResult = await agent.implementCode(cliCommandResult.output, writeDirectoryContents(currentCodebase));
+                implementResult = await agent.implementCode(cliCommandResult.output, currentCodebase);
+
+                output.log(`Results: ${implementResult.success ? "success" : "failure"}`);
                 if (implementResult.success) {
+                    writeChangesToDirectory(implementResult.result || new Map<string, string>, sourceDirectory);
                     cliCommandResult = await runAtCommandLine(cwd, command, args);
                 }
                 tries++;

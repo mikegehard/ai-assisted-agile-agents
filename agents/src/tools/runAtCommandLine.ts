@@ -43,21 +43,3 @@ export const runAtCommandLine = async (
         return new FinishedCommandResult(127, `Error: ${(error as Error).message}`);
     }
 }
-
-// async function streamToString(readableStream: ReadableStream): Promise<string> {
-//     const reader = readableStream.getReader();
-//     const decoder = new TextDecoder("utf-8");
-//     let result = '';
-//     let done = false;
-//
-//     while (!done) {
-//         const {value, done: doneReading} = await reader.read();
-//         done = doneReading;
-//         if (value) {
-//             result += decoder.decode(value, {stream: true});
-//         }
-//     }
-//
-//     result += decoder.decode(); // Final decode to flush any remaining data
-//     return result;
-// }

@@ -4,9 +4,8 @@ import { setupCLITest } from './testUtils';
 test('CLI /help command', async () => {
   const { sendCommand, waitForOutput } = setupCLITest();
 
-  // Test /help command
   sendCommand('/help');
-  const helpOutput = await waitForOutput(5000);
+  const helpOutput = await waitForOutput(1000);
 
   sendCommand('/exit');
 

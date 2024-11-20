@@ -6,7 +6,7 @@ test('Unknown command', async () => {
 
     sendCommand('/unknown');
 
-    const makeGreenOutput = await waitForOutput(5000);
+    const makeGreenOutput = await waitForOutput(1000);
 
     sendCommand('/exit');
 
