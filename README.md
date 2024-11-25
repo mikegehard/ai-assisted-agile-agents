@@ -156,7 +156,13 @@ costs down and responses faster.
 * https://services.google.com/fh/files/misc/2024_final_dora_report.pdf
 * [ai written playwright tests](https://www.ranger.net/)
 * [ai to write test cases](https://testrigor.com/)
-g [ibm agents](https://research.ibm.com/blog/ibm-swe-agents)
+* [ibm agents](https://research.ibm.com/blog/ibm-swe-agents)
+* [Evaluating Large Language Models Trained on Code](https://arxiv.org/pdf/2107.03374)
+  * Covers some interesting thoughts on sandboxing code written by AI due to security concerns
+* [AlphaCodium](https://github.com/Codium-ai/AlphaCodium)
+  * Interesting thoughts on how to minimize prompt sensitivity by breaking down the problem into smaller steps that mimic
+     the way a human would solve the problem.
+  * [Video](https://www.youtube.com/watch?v=23v9GBJvcrc&list=PLISstAySqk7JLal9v_nL09pLAmQLkXzQ4&index=5&pp=iAQB)
 
 ### Agent Frameworks
 
