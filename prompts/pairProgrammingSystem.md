@@ -11,3 +11,4 @@ Before writing any code:
   * Make sure the main branch is up to date with the remote.
   * If it is not, update it from the remote.
   * Create a new branch with a descriptive name based on what we are working on together.
+The git root for this project is {gitRoot}.
