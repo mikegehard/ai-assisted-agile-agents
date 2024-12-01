@@ -1,0 +1,32 @@
+{
+    "mcpServers": {
+        "git": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/Users/mikegehard/workspace/aiDev/mcp-servers/src/git",
+                "run",
+                "mcp-server-git"
+            ]
+        },
+        "filesystem": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "/Users/mikegehard/workspace/aiDev/mcp-servers",
+                "/Users/mikegehard/workspace/aiAssistedAgile/aiAssistedAgileAgents"
+            ]
+        },
+        "brave-search": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-brave-search"
+            ],
+            "env": {
+                "BRAVE_API_KEY": "YOUR_API_KEY_HERE"
+            }
+        }
+    }
+}
