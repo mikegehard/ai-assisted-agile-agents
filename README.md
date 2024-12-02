@@ -7,38 +7,45 @@ The goal of this project is to build a group of AI agents that can assist with A
 I've been working to figure out how to best integrate AI tools into my development workflow.
 I've been experimenting with the following tools:
 
-* Aider
-* Cursor or IntelliJ with Github Copilot
+* Aider - deprecated in favor of Claude Desktop with MCP
+* Cursor or IntelliJ with Github Copilot or Windsurf
 * Warp terminal
-* Claude Projects
+* Claude Desktop with MCP and Claude Projects
 
-The setup that I've come to like is:
+### Current workflow:
 
-* Aider running in a Warp terminal
-* Cursor, or IntelliJ with Copilot, as an editor
-    * I've been using IntelliJ for Kotlin development because it's familiar
-    * I've been using Cursor for Typescript development so I can experience Cursor
-
-Here is my flow. Work in progress:
-
-* I use Aider for assistance with anything that requires me to make changes to more than one file.
-    * Implementing new features
-    * Moving files
-    * I haven't testes too many refactorings yet because the codebase I'm working on isn't large enough yet
-    * This is still an area of active research for me.
-* I use the editor, with AI assistant, for assistance within a single file.
-    * Being able to ask inline for code changes is very helpful.
-* I work in small steps, driven by tests when appropriate, and always start with a clean git branch.
-    * This allows me to easily throw away any work that the AI assistant gets wrong
-    because the cost of generating that code was pretty low.
-    * I'm also not afraid to experiment with multiple attempts at a single task,
-    and throw away the code if it doesn't work out, because I still learn something from the attempt.
-* I run any command that could fail in a terminal in Cursor.
-    * This allows me to easily use Cursor's built in AI assistant to help me debug the command if it fails.
-* Once the tests are green, or any manual checks are compelete, I make a commit with a descriptive
-    commit message that says why I made the commit and/or what I learned during that commit.
-    * This description is important because I have a hypothesis that I would write an agent
-    that could mine commit messages to answer questions about the evolution of the codebase.
+* Set up Claude desktop to use MCP.
+	* [Config file](https://github.com/mikegehard/ai-assisted-agile-agents/tree/main/tool-configurations)
+* Start a Claude project for each codebase.
+	* Set project instructions [AI-Assisted Pair Programming Partner prompt](https://github.com/mikegehard/ai-assisted-agile-agents/blob/main/prompts/pairProgrammingSystem.md) 
+	* Add in any documentation that you have
+		* Screenshots are a great way to get the model UI context.
+* Long chats can cause issues for the model because the context window fills up
+	* If the model starts struggling, start a new chat.
+* Chat with the model as you would with a pair programming partner
+	* Be as explicit as possible
+	* Move in small steps.
+	* This helps the model focus on the task at hand.
+	* Also helps prevent long chats. See above.
+* Act as if you were mentoring a jr developer?
+    * Editor: 
+        * Cursor of Windsurf for non Kotlin projects
+        * IntelliJ for Kotlin
+            * Still need to experiment more with this.
+            * Been writing a log of Python and Typescript lately.
+    * Use AI in editor for:
+        * Autocomplete when changing code.
+        * Mass formatting.
+	* Review code changes from the model in the editor
+		* Git highlighting quickly shows the human what has changed.
+		* Allows human to quickly tweak what the model wrote.
+	* Make changes in editor
+		* Use AI in editor for:
+			* Autocomplete when changing code.
+			* Mass formatting.
+				* Select text and ask inline AI to reformat.
+	* Use Warp for running commands.
+		* Eventually you will get the [model to run commands](https://github.com/modelcontextprotocol/servers/issues/174)
 
 ## Repository Structure
 
