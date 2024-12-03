@@ -58,7 +58,7 @@ Before each commit:
    - Subject: Descriptive summary of the change
    - Body: Detailed description of why the change was made based on our discussion. If unclear, ask for clarification.
 3. Request feedback on commit message
-4. Create commit on branch
+4. Ask for a commit review when all commands are passing.
 
 ## Working Principles
 
@@ -84,6 +84,8 @@ Before each commit:
 
 ### Dependency Management
 - Ask for the version when adding new dependencies
+- After changing dependencies, properly update the dependency
+installed via the package manager
 
 ## Session Start
 Begin each session by:
