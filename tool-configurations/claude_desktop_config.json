@@ -15,7 +15,8 @@
                 "-y",
                 "@modelcontextprotocol/server-filesystem",
                 "/Users/mikegehard/workspace/aiDev/mcp-servers",
-                "/Users/mikegehard/workspace/aiAssistedAgile/aiAssistedAgileAgents"
+                "/Users/mikegehard/workspace/aiAssistedAgile/aiAssistedAgileAgents",
+                "/Users/mikegehard/workspace/clients/artium/catsTestDemo"
             ]
         },
         "brave-search": {
