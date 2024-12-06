@@ -14,7 +14,7 @@ I've been experimenting with the following tools:
 
 ### Current workflow:
 
-* Set up Claude desktop to use MCP.
+* Set up Claude desktop to use [MCP](https://www.anthropic.com/news/model-context-protocol).
 	* [Config file](https://github.com/mikegehard/ai-assisted-agile-agents/tree/main/tool-configurations)
 * Start a Claude project for each codebase.
 	* Set project instructions [AI-Assisted Pair Programming Partner prompt](https://github.com/mikegehard/ai-assisted-agile-agents/blob/main/prompts/pairProgrammingSystem.md) 
