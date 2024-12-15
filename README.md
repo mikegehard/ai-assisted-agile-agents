@@ -7,10 +7,50 @@ The goal of this project is to build a group of AI agents that can assist with A
 I've been working to figure out how to best integrate AI tools into my development workflow.
 I've been experimenting with the following tools:
 
+### Tools
+
+#### IDEs/Code Editors/AI assistants
 * Aider - deprecated in favor of Claude Desktop with MCP
-* Cursor or IntelliJ with Github Copilot or Windsurf
+    - I just found that Claude Desktop fit my flow better.
+* Cursor - deprecated in favor of Windsurf
+    - May go back to this
+    - For now, Windsurf Cascade just seems a bit better.
+* IntelliJ with Github Copilot - deprecated in favor of Windsurf
+    - This will probably be my goto for Kotlin development.
+* Windsurf
+    - For Python and Typscript development, this is currently my goto.
+    - Heavily using it now that you can set Global AI rules.
+        - I use this for the AI assisted agile development prompt.
+    - Need to prove out how it handles integrating recent information
+    with web searches like Claude Desktop + MCP does.
 * Warp terminal
+    - For running commands, this is currently my goto.
+    - Has become a little less useful because Windsurf allows me 
+        to run commands and then quickly give the output to the AI agent.
 * Claude Desktop with MCP and Claude Projects
+
+#### Front end app generators
+
+I'm currently investigaing which one of these I like the most.
+As a long time back end developer, my front end skills are a bit rusty.
+I'm hoping that these tools can help me quickly prototype front end apps.
+I'm also hoping that by using these tools I can learn more about current front end development trends.
+
+* [httlovable.dev](https://lovable.dev/)
+* [bolt.new](https://bolt.new/)
+
+#### AI research tools
+
+* [Notebookllm](https://notebooklm.google.com/)
+    * Using this to synthesize information from multiple sources.
+    * May switch over to Deep Resarch when it becomes available.
+* [Perplexity AI](https://www.perplexity.ai/)
+    * Solely using this for web search today.
+* Claude Desktop with MCP
+    * Now that this can use Brave serearch and fetch via MCP, it is
+    also good when looking for information about up to date software
+    information.
+
 
 ### Current workflow:
 
@@ -47,38 +87,30 @@ I've been experimenting with the following tools:
 	* Use Warp for running commands.
 		* Eventually you will get the [model to run commands](https://github.com/modelcontextprotocol/servers/issues/174)
 
-## Repository Structure
-
-* exampleApps - directory of apps that are used to test the AI agents
-* agents - home of the CLI and web API that are used to interact with the AI agents
-
-## Technologies
-
-* Typescript
-* Langchain
-* Langgraph
-* Playwright
-
 ## Agents
 
 Based on my use of Aider, I've decided that the best way to interact with the AI agents is to use a multi-shot conversation within a CLI chat tool.
 
-### Background/research
+See current flow above.
 
-* Use LangGraph with a set of tools that so that the LLMcan reason about the next step to take.
+At some point, I would like to build a set of agents focused on agile
+software development.
 
-### Evolving list of agents
+For now, the above flow is good enough so my available time to build these agents is focused elsehwere.
+
+
+### Evolving list of agents that I think I'll need eventually
 
 #### Acceptance test writer
 
 The goal of this agent is to take a user story and write a Playwright test for it.
 
-#### Input
+##### Input
 * User story text in markdown format
     * Could we use Gherkin syntax here?
 * Existing Playwright tests for feature
 
-#### Output
+##### Output
 * New or revised Playwright test
 
 
@@ -137,15 +169,6 @@ The goal of this agent is to deploy the application.
 * URL of running application
 or
 * Errors that are preventing deployment
-
-## LLM Prompt structure
-
-* System vs Human prompts
-* Loading context into system prompt
-* Loading context from previous messages into later prompts or use an LLM to create new prompt?
-* Ramp up on prompt engineering here to figure out the best approach
-* Using summaries created by an LLM can help with context size to keep
-costs down and responses faster.
 
 ## Random thoughts
 
