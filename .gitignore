@@ -7,3 +7,12 @@ test-results/
 .env
 
 .aider*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.env
