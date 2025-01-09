@@ -1,6 +1,27 @@
-# AI Assisted Agile Software Development Agents
+# AI Assisted Agile Software Development
 
-The goal of this project is to build a group of AI agents that can assist with Agile Software Development.
+## Goals
+The goal of this repo is:
+
+1. Serve as a home for all of my investigations/research into AI assisted agile software development.
+2. Serve as a home for any AI agents that I build to assist in that process.
+
+## Structure
+
+```
+.
+├── .cursorrules              # AI code generation rules for Cursor editor
+├── .env.example             # Example environment variables file
+├── LICENSE.md               # Dual AGPL/Commercial license terms
+├── README.md               # This file
+├── prompts/                # AI system prompts
+│   ├── metaprompt.xml     # XML template for generating structured AI prompts
+│   ├── pairProgrammingSystem.xml # XML version of pairProgrammingSystem.md
+│   └── pairProgrammingSystem.md # Core system prompt for AI development agents
+└── tool-configurations/    # Config files for AI tools
+    ├── README.md          # Tool config documentation
+    └── claude_desktop_config.json # Claude Desktop MCP config
+```
 
 ## Background
 
@@ -15,7 +36,7 @@ I've been experimenting with the following tools:
 * Cursor - deprecated in favor of Windsurf
     - May go back to this
     - For now, Windsurf Cascade just seems a bit better.
-* IntelliJ with Github Copilot - deprecated in favor of Windsurf
+* IntelliJ/MS Code with Github Copilot - deprecated in favor of Windsurf
     - This will probably be my goto for Kotlin development.
 * Windsurf
     - For Python and Typscript development, this is currently my goto.
@@ -25,7 +46,7 @@ I've been experimenting with the following tools:
     with web searches like Claude Desktop + MCP does.
 * Warp terminal
     - For running commands, this is currently my goto.
-    - Has become a little less useful because Windsurf allows me 
+    - Has become a little less useful because Windsurf allows me
         to run commands and then quickly give the output to the AI agent.
 * Claude Desktop with MCP and Claude Projects
 
@@ -52,12 +73,24 @@ I'm also hoping that by using these tools I can learn more about current front e
     information.
 
 
-### Current workflow:
+### Workflows:
 
+#### [Principled AI coding](https://agenticengineer.com/principled-ai-coding) - current workflow
+
+After going through the class above, I really feel like this is the way of the future.
+More to come...
+
+#### Windsurf - Deprecated in favor of Principled AI coding
+
+I used Windsurf for a while with the [pairProgrammingSystem prompt](https://github.com/mikegehard/ai-assisted-agile-agents/blob/main/prompts/pairProgrammingSystem.md).
+
+This worked well using [chat oriented programming (CHOP)](https://sourcegraph.com/blog/chat-oriented-programming-in-action).
+
+#### Claude Desktop with MCP - Deprecated in favor of Windsurf
 * Set up Claude desktop to use [MCP](https://www.anthropic.com/news/model-context-protocol).
 	* [Config file](https://github.com/mikegehard/ai-assisted-agile-agents/tree/main/tool-configurations)
 * Start a Claude project for each codebase.
-	* Set project instructions [AI-Assisted Pair Programming Partner prompt](https://github.com/mikegehard/ai-assisted-agile-agents/blob/main/prompts/pairProgrammingSystem.md) 
+	* Set project instructions [AI-Assisted Pair Programming Partner prompt](https://github.com/mikegehard/ai-assisted-agile-agents/blob/main/prompts/pairProgrammingSystem.md)
 	* Add in any documentation that you have
 		* Screenshots are a great way to get the model UI context.
 * Long chats can cause issues for the model because the context window fills up
@@ -68,7 +101,7 @@ I'm also hoping that by using these tools I can learn more about current front e
 	* This helps the model focus on the task at hand.
 	* Also helps prevent long chats. See above.
 * Act as if you were mentoring a jr developer?
-    * Editor: 
+    * Editor:
         * Cursor of Windsurf for non Kotlin projects
         * IntelliJ for Kotlin
             * Still need to experiment more with this.
@@ -86,89 +119,6 @@ I'm also hoping that by using these tools I can learn more about current front e
 				* Select text and ask inline AI to reformat.
 	* Use Warp for running commands.
 		* Eventually you will get the [model to run commands](https://github.com/modelcontextprotocol/servers/issues/174)
-
-## Agents
-
-Based on my use of Aider, I've decided that the best way to interact with the AI agents is to use a multi-shot conversation within a CLI chat tool.
-
-See current flow above.
-
-At some point, I would like to build a set of agents focused on agile
-software development.
-
-For now, the above flow is good enough so my available time to build these agents is focused elsehwere.
-
-
-### Evolving list of agents that I think I'll need eventually
-
-#### Acceptance test writer
-
-The goal of this agent is to take a user story and write a Playwright test for it.
-
-##### Input
-* User story text in markdown format
-    * Could we use Gherkin syntax here?
-* Existing Playwright tests for feature
-
-##### Output
-* New or revised Playwright test
-
-
-#### Code writer
-
-The goal of this agent is to write software that:
-
-* compiles, null step for languages that don't use a compiler
-* passes all unit tests
-* passes all acceptance tests
-
-#### Flow for outside in development
-    Pre-conditions:
-    * All tests are green
-    * Git branch is clean
-
-    1. Human: write acceptance test based on user story
-        * May use editor assistant to help write the test
-    2. Human: Ask assistant to get the codebase back to green
-    3. AI assistant: Determine what tools need to be run to get the codebase back to green based on the changed requirements.
-        * Tools:
-            * Compile code, null for languages that don't use a compiler
-            * Run acceptance tests
-            * Run unit tests
-        * Thoughts:
-            * The smaller the steps/context, the better the LLM's ability to reason about the next step so this is why you compile first.
-            * This is why we try to compile first and then run tests.
-            * Use a system prompt to educate the LLM about the Outside In TDD process.
-    4. Human: Create commit message, including information about why the change was made.
-        * A commit is made here so that it is easy to roll back to a green
-        state and ask for more refactoring from the AI assistant.
-    5. AI assistant: Refactor the code to improve the design of the codebase while keeping the codebase green
-    6. Human: Review changes and ammend the last commit to integrate refactoring changes.
-
-#### Edge cases
-* Does this agent bootstrap the codebase or is there another agent that does that?
-    * For now, assume that the codebase is bootstrapped and this agent will modify the codebase
-        * Most of the time for a developer will be spent in an established codebase
-        so this is a lower priority.
-
-#### Code refactoring agent
-
-Can you come up with a set of prompts that can be used to guide the llm
-thought a set of refactorings?
-
-Could you use the list from the Martin Fowler book "Refactoring" as a starting point?
-
-#### Application deployer
-
-The goal of this agent is to deploy the application.
-
-#### Input
-* Deployable artifact from CI process
-
-#### Output
-* URL of running application
-or
-* Errors that are preventing deployment
 
 ## Random thoughts
 
