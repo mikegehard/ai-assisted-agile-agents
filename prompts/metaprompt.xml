@@ -4,9 +4,9 @@ Source: https://gist.github.com/disler/29ff18823670098c26fa370ad802fa96
 
 <purpose>
     You are an expert prompt engineer, capable of creating detailed and effective prompts for language models.
-    
+
     Your task is to generate a comprehensive prompt based on the user's input structure.
-    
+
     Follow the instructions closely to generate a new prompt template.
 </purpose>
 
@@ -210,14 +210,14 @@ Your LaTeX equation:
             The tenant agrees to pay a monthly rent of $1,500 due on the 1st of each month. The tenant will provide a security deposit of $1,500, refundable at the end of the lease term, provided there is no damage. The tenant is responsible for routine maintenance of the property, while the landlord will handle structural repairs. Early termination requires a 30-day notice and forfeiture of half the security deposit.
         </sample-contract-text>
         <summary>
-            - Monthly Rent: $1,500 due on the 1st  
-            - Security Deposit: $1,500, refundable if no damage  
-            - Maintenance: Tenant handles routine upkeep; Landlord handles major repairs  
+            - Monthly Rent: $1,500 due on the 1st
+            - Security Deposit: $1,500, refundable if no damage
+            - Maintenance: Tenant handles routine upkeep; Landlord handles major repairs
             - Early Termination: 30-day notice required, tenant forfeits half of the deposit
         </summary>
         <action-points>
-            1. Mark your calendar to pay rent by the 1st each month.  
-            2. Keep the property clean and address routine maintenance promptly.  
+            1. Mark your calendar to pay rent by the 1st each month.
+            2. Keep the property clean and address routine maintenance promptly.
             3. Consider the cost of forfeiting half the deposit if ending the lease early.
         </action-points>
     </example>
@@ -230,14 +230,14 @@ Your LaTeX equation:
             The service provider will respond to support requests within 24 hours. A monthly fee of $300 is payable on the 15th of each month. All proprietary information disclosed will remain confidential. The provider may suspend services if payment is not received within 7 days of the due date.
         </sample-contract-text>
         <summary>
-            - Response Time: Within 24 hours of each request  
-            - Monthly Fee: $300, due on the 15th of each month  
-            - Confidentiality: All shared information must be kept secret  
+            - Response Time: Within 24 hours of each request
+            - Monthly Fee: $300, due on the 15th of each month
+            - Confidentiality: All shared information must be kept secret
             - Non-Payment: Services suspended if not paid within 7 days after due date
         </summary>
         <action-points>
-            1. Ensure timely payment by the 15th each month to avoid service suspension.  
-            2. Log requests clearly so provider can respond within 24 hours.  
+            1. Ensure timely payment by the 15th each month to avoid service suspension.
+            2. Log requests clearly so provider can respond within 24 hours.
             3. Protect and do not disclose any proprietary information.
         </action-points>
     </example>
@@ -250,14 +250,14 @@ Your LaTeX equation:
             The employee will receive an annual salary of $60,000 paid in bi-weekly installments. The employer provides health insurance benefits effective from the 30th day of employment. The employee is expected to meet performance targets set quarterly. The employer may terminate the contract for repeated underperformance or serious misconduct.
         </sample-contract-text>
         <summary>
-            - Compensation: $60,000/year, paid bi-weekly  
-            - Benefits: Health insurance after 30 days  
-            - Performance: Quarterly targets must be met  
+            - Compensation: $60,000/year, paid bi-weekly
+            - Benefits: Health insurance after 30 days
+            - Performance: Quarterly targets must be met
             - Termination: Possible if underperformance is repeated or misconduct occurs
         </summary>
         <action-points>
-            1. Track and meet performance goals each quarter.  
-            2. Review the insurance coverage details after 30 days of employment.  
+            1. Track and meet performance goals each quarter.
+            2. Review the insurance coverage details after 30 days of employment.
             3. Maintain professional conduct and address performance feedback promptly.
         </action-points>
     </example>

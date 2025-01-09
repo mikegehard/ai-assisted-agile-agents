@@ -16,3 +16,9 @@ __pycache__/
 .coverage
 htmlcov/
 .env
+
+.git
+node_modules
+*.log
+.env
+bun.lockb
