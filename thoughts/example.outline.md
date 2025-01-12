@@ -17,8 +17,4 @@
 
 ## Outline
 
-Paste in the AI generated outline here.
-
-## Generated article
-
-Paste in the AI generated article here and edit before publishing.
+<outlineGoesHere>
