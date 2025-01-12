@@ -1,7 +1,17 @@
 # AI Assisted Agile Software Development
 
+## Background
+
+I am pushing all in on integrating AI into software development process as I believe that AI assistance is the future
+of software development.
+
+I do not believe that AI agents will replace software developers anytime soon.
+
+Instead, I believe that AI agents will augment software developers and help them be more productive.
+
 ## Goals
-Serve as a home for all of my investigations/research/thoughts into AI-assisted agile software development.
+
+- serve as a home for all of my investigations/research/thoughts into AI-assisted agile software development
 
 ## Structure
 
