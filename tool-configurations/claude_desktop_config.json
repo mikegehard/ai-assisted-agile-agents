@@ -14,10 +14,7 @@
             "args": [
                 "-y",
                 "@modelcontextprotocol/server-filesystem",
-                "/Users/mikegehard/workspace/aiDev/mcp-servers",
-                "/Users/mikegehard/workspace/aiAssistedAgile/aiAssistedAgileAgents",
-                "/Users/mikegehard/workspace/aiDev/isolated-commands-mcp-server",
-                "/Users/mikegehard/workspace/clients/artium/catFramework"
+                "/Users/mikegehard/workspace/aiDev/mcp-servers"
             ]
         },
         "brave-search": {
@@ -37,10 +34,10 @@
             ]
         },
         "isolated-commands-mcp-server": {
-          "command": "node",
-          "args": [
-            "/Users/mikegehard/workspace/aiDev/isolated-commands-mcp-server/build/index.js"
-          ]
+            "command": "node",
+            "args": [
+                "/Users/mikegehard/workspace/aiDev/isolated-commands-mcp-server/build/index.js"
+            ]
         }
     }
 }
