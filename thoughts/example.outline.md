@@ -1,4 +1,4 @@
-# Playbooks in AI Assisted Agile Software Development
+# Example: Playbooks in AI Assisted Agile Software Development
 
 ## Goals
 - To expose the reader to the concept of playbooks in software development.
@@ -6,6 +6,11 @@
 - To introduce the reader to my collection of playbooks for AI Assisted Agile Software Development.
 
 ## Questions to answer
+- Who?
+- What?
+- Where?
+- Why?
+- When?
 - Why are playbooks important in software development?
 - What is the purpose of playbooks in software development?
 - Who benefits from playbooks?
