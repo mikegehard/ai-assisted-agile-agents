@@ -17,7 +17,7 @@ context to an AI assistant we use to help us understand the codebase and how it 
 over time.
 
 ## Recommendations
- - Allow AI assistants to generate the subject of the commit message based on the diffs
+- Allow AI assistants to generate the subject of the commit message based on the diffs
 but require the developer to provide the "why" of the change in the body.
 
 - Combine this with the (content writing playbook)[content-writing.md] to both speed up
@@ -30,4 +30,4 @@ and improve the quality of your commit messages.
 [Aider prompt](https://github.com/Aider-AI/aider/blob/main/aider/prompts.py#L8)
 
 ## References
-- https://www.conventionalcommits.org/en/v1.0.0/#summary
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
