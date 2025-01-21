@@ -10,7 +10,10 @@ resource exploitation.
 
 This playbook provides practical guidance on using containerization to safely execute and test AI generated code while protecting your development environment.
 
-This security becomes more important as we close the feedback loop by allowing an AI assistant to automatically run commands, like running a test suite, to iterate on AI generated code autonomously.
+This security becomes more important as we close the feedback loop by allowing an AI assistant to automatically run commands, like running a test suite, to get feeback
+to iterate on AI generated code autonomously.
+
+See the [example repo](https://github.com/mikegehard/devcontainers-for-isolation) for details.
 
 Risks:
 - System compromise through unauthorized system calls
