@@ -8,7 +8,9 @@ risks. Studies indicate that approximately 40% of AI-generated code contains sec
 vulnerabilities. These risks range from vulnerable code generation to system compromise and
 resource exploitation.
 
-This playbook provides practical guidance on using containerization to safely execute and test AI generated code while protecting your development environment.
+This playbook provides practical guidance on using containerization to safely execute and test AI generated code while protecting your development environment. This becomes more
+important as we close the feedback loop by allowing an AI assistant to automatically run
+commands, like running a test suite, to iterate on AI generated code.
 
 Risks:
 - System compromise through unauthorized system calls
